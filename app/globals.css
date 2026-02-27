@@ -12,44 +12,66 @@ body {
 }
 
 body {
-  @apply bg-[#070709] text-white antialiased;
+  @apply antialiased;
   font-feature-settings: "liga" 1, "calt" 1;
 }
 
-.bg-premium {
+.ruay-bg {
   background:
-    radial-gradient(70rem 40rem at 10% -10%, rgba(16, 185, 129, 0.15), transparent 55%),
-    radial-gradient(70rem 40rem at 100% 0%, rgba(250, 204, 21, 0.14), transparent 60%),
-    radial-gradient(60rem 35rem at 50% 110%, rgba(34, 211, 238, 0.09), transparent 65%),
-    linear-gradient(180deg, #09090b 0%, #060608 55%, #050507 100%);
+    radial-gradient(60rem 30rem at 0% -10%, rgba(239, 68, 68, 0.16), transparent 55%),
+    radial-gradient(50rem 25rem at 100% 0%, rgba(250, 204, 21, 0.12), transparent 50%),
+    linear-gradient(180deg, #110204 0%, #080102 55%, #050102 100%);
 }
 
-.grain::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background-image: radial-gradient(rgba(255, 255, 255, 0.05) 0.5px, transparent 0.5px);
-  background-size: 3px 3px;
-  mix-blend-mode: soft-light;
-  opacity: 0.22;
-}
-
-.glass {
-  @apply border border-white/10 bg-white/[0.04] backdrop-blur-xl;
-}
-
-.gold-text {
-  @apply bg-gradient-to-r from-yellow-200 via-amber-300 to-yellow-500 bg-clip-text text-transparent;
-}
-
-.glow-border {
+.ruay-panel {
   box-shadow:
-    inset 0 0 0 1px rgba(255, 255, 255, 0.06),
-    0 0 0 1px rgba(250, 204, 21, 0.12),
-    0 10px 35px rgba(0, 0, 0, 0.35);
+    inset 0 0 0 1px rgba(255, 255, 255, 0.03),
+    0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+.ruay-hero {
+  background:
+    radial-gradient(40rem 20rem at 70% 20%, rgba(255, 255, 255, 0.08), transparent 70%),
+    repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.03),
+      rgba(255, 255, 255, 0.03) 1px,
+      transparent 1px,
+      transparent 24px
+    ),
+    linear-gradient(120deg, rgba(80, 7, 12, 0.95), rgba(45, 6, 9, 0.98));
+}
+
+.ruay-btn-primary {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-yellow-300 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-xl bg-gradient-to-r from-red-600 to-red-500 px-4 py-2 text-sm font-bold text-white transition hover:brightness-110 active:scale-[0.99];
+}
+
+.ruay-btn-secondary {
+  @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-black rounded-xl border border-white/20 bg-black/25 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10 active:scale-[0.99];
 }
 
 .focus-ring {
   @apply focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-300 focus-visible:ring-offset-2 focus-visible:ring-offset-black;
+}
+
+.ruay-marquee {
+  overflow: hidden;
+  position: relative;
+}
+
+.ruay-marquee-track {
+  white-space: nowrap;
+  display: inline-block;
+  min-width: 100%;
+  padding-left: 100%;
+  animation: ruay-marquee 18s linear infinite;
+}
+
+@keyframes ruay-marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }

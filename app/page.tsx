@@ -1,187 +1,182 @@
-const highlights = [
-  "โครงสร้างพร้อม Deploy บน Vercel",
-  "ดีไซน์ Mobile-first ลื่นทุกหน้าจอ",
-  "โค้ดอ่านง่าย แก้ไขต่อได้ทันที",
-  "ไม่ใช้ asset ติดลิขสิทธิ์",
+const navItems = [
+  { icon: "🎰", label: "คาสิโน" },
+  { icon: "🪙", label: "สล็อต" },
+  { icon: "⚽", label: "กีฬา" },
+  { icon: "🐟", label: "ยิงปลา" },
+  { icon: "🎯", label: "หวย" },
+  { icon: "🃏", label: "เกมไพ่" },
 ];
 
-const promos = [
+const featureCards = [
   {
-    title: "Premium UI Kit",
-    desc: "โทนดำ-ทอง-มรกต พร้อม glass effect และ border glow แบบมืออาชีพ",
-    tag: "Design",
+    icon: "🎁",
+    title: "โปรโมชั่น",
+    desc: "โปรพิเศษสำหรับสมาชิกใหม่และลูกค้าเดิมทุกวัน",
   },
   {
-    title: "Fast Launch",
-    desc: "จัดโครงหน้าให้ครบ Hero / Promo / FAQ / Footer พร้อมใช้งานจริง",
-    tag: "Speed",
+    icon: "🏆",
+    title: "กิจกรรม",
+    desc: "กิจกรรมสะสมแต้ม แลกรางวัลได้ตลอด 24 ชั่วโมง",
   },
   {
-    title: "Clean Code",
-    desc: "โค้ด production-ready แยก section ชัด ดูแลง่ายในระยะยาว",
-    tag: "Quality",
+    icon: "🛎️",
+    title: "ข่าวสาร",
+    desc: "อัปเดตระบบและสิทธิพิเศษใหม่ก่อนใคร",
   },
 ];
 
-const steps = [
-  { no: "01", title: "ปรับข้อความแบรนด์", desc: "แก้หัวข้อ/CTA ในไฟล์เดียว" },
-  { no: "02", title: "ตรวจความเรียบร้อย", desc: "รัน build ให้ผ่านก่อนขึ้นจริง" },
-  { no: "03", title: "Deploy", desc: "Push ขึ้น GitHub แล้วปล่อยบน Vercel" },
+const winners = [
+  { name: "u***92", game: "สล็อตแตกหนัก", amount: "฿ 148,000" },
+  { name: "b***17", game: "โบนัสกีฬา", amount: "฿ 86,500" },
+  { name: "p***44", game: "แจ็คพอตรายวัน", amount: "฿ 209,900" },
 ];
 
 const faqs = [
   {
-    q: "ต้องมี backend ไหม?",
-    a: "เวอร์ชันนี้เป็น Landing Page ล้วน ไม่ต้องมี backend ก็ใช้งานได้ทันที",
+    q: "สมัครสมาชิกใช้เวลานานไหม?",
+    a: "กรอกข้อมูลพื้นฐานไม่กี่ขั้นตอน ก็เริ่มใช้งานได้ทันที",
   },
   {
-    q: "แก้สีธีมตรงไหน?",
-    a: "แก้ใน app/globals.css (คลาส bg-premium, gold-text, glass, glow-border)",
+    q: "รองรับการใช้งานบนมือถือหรือไม่?",
+    a: "รองรับเต็มรูปแบบทั้ง iOS / Android และเดสก์ท็อป",
   },
   {
-    q: "รองรับมือถือไหม?",
-    a: "รองรับเต็มรูปแบบแบบ mobile-first และปรับขนาดตามจออัตโนมัติ",
+    q: "มีทีมซัพพอร์ตตลอดเวลาหรือไม่?",
+    a: "มีทีมงานดูแลตลอด 24 ชั่วโมง ผ่านช่องทางแชตหลัก",
   },
   {
-    q: "ถ้าจะเพิ่มฟอร์มติดต่อทำได้ไหม?",
-    a: "ทำได้ โดยเพิ่ม section form และเชื่อม API ภายหลังโดยไม่กระทบโครงหลัก",
+    q: "สามารถปรับดีไซน์/ข้อความเพิ่มภายหลังได้ไหม?",
+    a: "ได้ทั้งหมด โครงหน้าออกแบบให้แก้ไขและต่อยอดได้ง่าย",
   },
 ];
 
-function CtaButton({
-  href,
-  children,
-  variant = "primary",
-}: {
-  href: string;
-  children: React.ReactNode;
-  variant?: "primary" | "secondary";
-}) {
-  const base =
-    "focus-ring inline-flex items-center justify-center rounded-2xl px-5 py-3 text-sm font-semibold transition active:scale-[0.99]";
-  const style =
-    variant === "primary"
-      ? "bg-emerald-400 text-black hover:bg-emerald-300"
-      : "border border-white/15 bg-white/5 text-white hover:bg-white/10";
-  return (
-    <a href={href} className={`${base} ${style}`}>
-      {children}
-    </a>
-  );
-}
-
 export default function Page() {
   return (
-    <main className="bg-premium relative overflow-hidden">
-      <div className="grain relative">
-        <div className="mx-auto w-full max-w-6xl px-5 py-8 md:px-8 md:py-10">
-          <header className="glass glow-border flex items-center justify-between rounded-2xl px-4 py-3 md:px-5">
+    <main className="ruay-bg min-h-screen text-white">
+      <div className="mx-auto w-full max-w-6xl px-4 pb-16 pt-4 md:px-6">
+        <header className="ruay-panel overflow-hidden rounded-2xl border border-red-800/60">
+          <div className="flex items-center justify-between gap-3 bg-gradient-to-r from-[#3b0508] via-[#5b0c10] to-[#3b0508] px-4 py-3">
             <div className="flex items-center gap-3">
-              <div className="grid h-9 w-9 place-items-center rounded-xl bg-emerald-400 text-base font-bold text-black">
-                ฿
+              <div className="rounded-xl bg-black/40 px-3 py-1 text-lg font-black tracking-wide text-yellow-300">
+                RUAYLUCKKY
               </div>
-              <div>
-                <p className="text-sm font-semibold tracking-wide">ruayluckky</p>
-                <p className="text-xs text-white/60">Premium Landing Experience</p>
-              </div>
+              <span className="hidden text-xs text-zinc-300 md:inline">Premium Entertainment Platform</span>
             </div>
-            <nav className="hidden gap-6 text-sm text-white/75 md:flex">
-              <a className="focus-ring rounded-md hover:text-white" href="#promo">Promo</a>
-              <a className="focus-ring rounded-md hover:text-white" href="#steps">Steps</a>
-              <a className="focus-ring rounded-md hover:text-white" href="#faq">FAQ</a>
-            </nav>
-          </header>
+            <div className="flex items-center gap-2">
+              <button className="ruay-btn-secondary">เข้าสู่ระบบ</button>
+              <button className="ruay-btn-primary">สมัครสมาชิก</button>
+            </div>
+          </div>
 
-          <section className="pt-14 md:pt-20">
-            <div className="mx-auto max-w-3xl text-center">
-              <p className="inline-flex items-center gap-2 rounded-full border border-emerald-300/30 bg-emerald-400/10 px-4 py-2 text-xs text-emerald-200">
-                <span className="h-2 w-2 rounded-full bg-emerald-300" />
-                Modern • Premium • Ready
+          <nav className="grid grid-cols-3 gap-2 bg-black/40 p-3 md:grid-cols-6">
+            {navItems.map((item) => (
+              <a
+                key={item.label}
+                href="#"
+                className="focus-ring rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-center text-sm transition hover:border-yellow-300/30 hover:bg-white/10"
+              >
+                <span className="mr-1">{item.icon}</span>
+                {item.label}
+              </a>
+            ))}
+          </nav>
+        </header>
+
+        <section className="ruay-hero mt-4 overflow-hidden rounded-2xl border border-red-700/60">
+          <div className="grid items-center gap-6 p-6 md:grid-cols-2 md:p-9">
+            <div>
+              <p className="inline-flex rounded-full border border-yellow-300/30 bg-yellow-300/10 px-3 py-1 text-xs text-yellow-200">
+                ระบบเร็ว • ฝากถอนลื่น
               </p>
-
-              <h1 className="mt-6 text-4xl font-semibold leading-tight tracking-tight text-white md:text-6xl">
-                หน้าเว็บพรีเมียมสไตล์สากล
-                <span className="gold-text block">สำหรับ ruayluckky</span>
+              <h1 className="mt-4 text-3xl font-extrabold leading-tight md:text-5xl">
+                ruayluckky
+                <span className="block text-yellow-300">เว็บสไตล์พรีเมียม</span>
               </h1>
-
-              <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-white/75 md:text-base">
-                โทนดำ-ทองพร้อม accent เขียวมรกต, spacing โล่งแบบ SaaS/Fintech,
-                และโครงสร้างพร้อมต่อยอดใช้งานจริงทันที
+              <p className="mt-3 max-w-xl text-sm text-zinc-200 md:text-base">
+                โทนแดงดำทองแบบอินเตอร์ เฮดเดอร์แน่น แบนเนอร์เด่น การ์ดชัด พร้อมเปิดใช้งานจริงและต่อยอดคอนเทนต์ได้ทันที
               </p>
-
-              <div className="mt-8 flex flex-col items-center justify-center gap-3 sm:flex-row">
-                <CtaButton href="#steps" variant="primary">เริ่มใช้งานตอนนี้</CtaButton>
-                <CtaButton href="#promo" variant="secondary">ดูดีไซน์ตัวอย่าง</CtaButton>
+              <div className="mt-5 flex flex-wrap gap-2">
+                <button className="ruay-btn-primary">รับโปรวันนี้</button>
+                <button className="ruay-btn-secondary">ดูรายละเอียด</button>
               </div>
             </div>
-          </section>
 
-          <section className="mt-12">
-            <div className="glass glow-border grid gap-3 rounded-2xl p-4 sm:grid-cols-2 md:grid-cols-4">
-              {highlights.map((item) => (
-                <div key={item} className="rounded-xl border border-white/10 bg-black/20 px-3 py-3 text-sm text-white/80">
-                  {item}
+            <div className="rounded-2xl border border-white/15 bg-black/25 p-4 backdrop-blur">
+              <div className="grid grid-cols-2 gap-3 text-sm">
+                <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                  <p className="text-zinc-300">สมาชิกออนไลน์</p>
+                  <p className="mt-1 text-xl font-bold text-emerald-300">12,480</p>
                 </div>
-              ))}
-            </div>
-          </section>
-
-          <section id="promo" className="mt-14">
-            <h2 className="text-2xl font-semibold text-white md:text-3xl">Promo Highlights</h2>
-            <p className="mt-2 text-sm text-white/65">การ์ดพรีเมียม พร้อม hover/active state และอ่านง่ายทุกอุปกรณ์</p>
-            <div className="mt-6 grid gap-4 md:grid-cols-3">
-              {promos.map((card) => (
-                <article
-                  key={card.title}
-                  className="glass glow-border rounded-2xl p-5 transition hover:-translate-y-0.5 hover:border-emerald-300/30 active:translate-y-0"
-                >
-                  <span className="inline-block rounded-full border border-yellow-300/30 bg-yellow-300/10 px-2.5 py-1 text-xs text-yellow-200">
-                    {card.tag}
-                  </span>
-                  <h3 className="mt-4 text-lg font-semibold">{card.title}</h3>
-                  <p className="mt-2 text-sm leading-relaxed text-white/70">{card.desc}</p>
-                </article>
-              ))}
-            </div>
-          </section>
-
-          <section id="steps" className="mt-14">
-            <h2 className="text-2xl font-semibold text-white md:text-3xl">เริ่มต้น 3 ขั้น</h2>
-            <div className="mt-6 grid gap-4 md:grid-cols-3">
-              {steps.map((s) => (
-                <div key={s.no} className="glass glow-border rounded-2xl p-5">
-                  <p className="text-xs text-emerald-200">STEP {s.no}</p>
-                  <h3 className="mt-2 text-lg font-semibold">{s.title}</h3>
-                  <p className="mt-2 text-sm text-white/70">{s.desc}</p>
+                <div className="rounded-xl border border-white/10 bg-white/5 p-3">
+                  <p className="text-zinc-300">จ่ายจริงวันนี้</p>
+                  <p className="mt-1 text-xl font-bold text-yellow-300">฿ 3.9M</p>
                 </div>
-              ))}
+              </div>
+              <div className="mt-3 flex items-center justify-center gap-2">
+                <span className="h-2 w-2 rounded-full bg-white/50" />
+                <span className="h-2 w-2 rounded-full bg-yellow-300" />
+                <span className="h-2 w-2 rounded-full bg-white/50" />
+                <span className="h-2 w-2 rounded-full bg-white/50" />
+              </div>
             </div>
-          </section>
+          </div>
+        </section>
 
-          <section id="faq" className="mt-14">
-            <h2 className="text-2xl font-semibold text-white md:text-3xl">คำถามที่พบบ่อย</h2>
-            <div className="mt-5 space-y-3">
-              {faqs.map((item) => (
-                <details
-                  key={item.q}
-                  className="glass glow-border rounded-xl p-4 open:border-emerald-300/30"
-                >
-                  <summary className="focus-ring cursor-pointer list-none text-sm font-medium text-white">
-                    {item.q}
-                  </summary>
-                  <p className="mt-2 text-sm leading-relaxed text-white/70">{item.a}</p>
-                </details>
-              ))}
-            </div>
-          </section>
-
-          <footer className="mt-16 border-t border-white/10 py-8 text-sm text-white/55">
-            <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-              <p>© {new Date().getFullYear()} ruayluckky</p>
-              <p className="text-white/45">Built with Next.js + Tailwind • Premium Landing</p>
-            </div>
-          </footer>
+        <div className="ruay-marquee mt-3 rounded-xl border border-yellow-500/20 bg-black/40 px-4 py-2 text-sm text-yellow-100">
+          <div className="ruay-marquee-track">
+            🔔 เปิดให้บริการ 24 ชั่วโมง • โปรโมชั่นใหม่อัปเดตตลอดวัน • ระบบรองรับทุกอุปกรณ์ • ทีมงานพร้อมดูแลตลอดเวลา
+          </div>
         </div>
+
+        <section className="mt-5 grid gap-3 md:grid-cols-3">
+          {featureCards.map((card) => (
+            <article
+              key={card.title}
+              className="ruay-panel rounded-2xl border border-red-700/60 bg-gradient-to-br from-[#5a080d]/90 to-[#2b0508]/90 p-5 transition hover:-translate-y-0.5"
+            >
+              <div className="text-3xl">{card.icon}</div>
+              <h3 className="mt-2 text-xl font-bold text-yellow-200">{card.title}</h3>
+              <p className="mt-1 text-sm text-zinc-200">{card.desc}</p>
+            </article>
+          ))}
+        </section>
+
+        <section className="mt-6 rounded-2xl border border-red-800/70 bg-gradient-to-b from-[#3c0609] to-[#170306] p-5 md:p-7">
+          <div className="flex items-center justify-between">
+            <h2 className="text-3xl font-extrabold text-yellow-300 md:text-5xl">JACKPOT แตก!</h2>
+            <span className="rounded-full border border-white/20 px-3 py-1 text-xs text-zinc-200">อัปเดตล่าสุด</span>
+          </div>
+          <p className="mt-2 text-zinc-200">แสดงข้อมูลผู้ชนะล่าสุด (ตัวอย่างดีไซน์หน้าเว็บ)</p>
+
+          <div className="mt-4 grid gap-3 md:grid-cols-3">
+            {winners.map((w) => (
+              <div key={w.name + w.amount} className="rounded-xl border border-white/10 bg-white/5 p-4">
+                <p className="text-sm text-zinc-300">ผู้ใช้: {w.name}</p>
+                <p className="mt-1 font-semibold">{w.game}</p>
+                <p className="mt-2 text-2xl font-extrabold text-emerald-300">{w.amount}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        <section className="mt-6">
+          <h3 className="text-xl font-bold text-yellow-200">คำถามที่พบบ่อย</h3>
+          <div className="mt-3 space-y-2">
+            {faqs.map((f) => (
+              <details key={f.q} className="ruay-panel rounded-xl border border-white/10 bg-black/25 p-4">
+                <summary className="focus-ring cursor-pointer text-sm font-semibold">{f.q}</summary>
+                <p className="mt-2 text-sm text-zinc-300">{f.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+
+        <footer className="mt-8 border-t border-white/10 pt-6 text-sm text-zinc-400">
+          <div className="flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+            <p>© {new Date().getFullYear()} ruayluckky</p>
+            <p>Premium dark-red landing • Next.js + Tailwind</p>
+          </div>
+        </footer>
       </div>
     </main>
   );
