@@ -2,16 +2,15 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Ruay Luckky",
-  description: "iMessage green bubble energy, but for everyone.",
-  icons: [{ rel: "icon", url: "/favicon.ico" }]
+  title: "ruayluckky",
+  description: "Landing page พรีเมียมโทนดำ-ทอง-มรกต สไตล์สากล"
 };
 
 export default function RootLayout({
-  children
-}: Readonly<{
+  children,
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="th">
       <body>{children}</body>
