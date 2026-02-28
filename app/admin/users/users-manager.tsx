@@ -24,7 +24,8 @@ export default function UsersManager() {
   async function createUser(e: React.FormEvent) {
     e.preventDefault();
     setMsg("");
-    const r = await fetch("/api/admin/users", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ action: "create", username, password, role }) });
+    const payload = { action: "create", username: username.trim().toLowerCase(), password: password.trim(), role };
+    const r = await fetch("/api/admin/users", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
     const d = await r.json();
     if (!r.ok) return setMsg(d.message || "ไม่สำเร็จ");
     setUsername(""); setPassword(""); setRole("staff"); setMsg("เพิ่มบัญชีแล้ว");
@@ -48,12 +49,13 @@ export default function UsersManager() {
 
   return (
     <div className="space-y-4">
-      <form onSubmit={createUser} className="grid gap-2 rounded-2xl border border-zinc-700 bg-zinc-900/70 p-4 md:grid-cols-4">
+      <form onSubmit={createUser} className="grid gap-2 rounded-2xl border border-zinc-700 bg-zinc-900/70 p-4 md:grid-cols-5">
         <input value={username} onChange={(e) => setUsername(e.target.value)} placeholder="username" className="rounded-lg border border-white/15 bg-black/30 px-3 py-2" />
-        <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="password" className="rounded-lg border border-white/15 bg-black/30 px-3 py-2" />
+        <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" placeholder="password (>=4)" className="rounded-lg border border-white/15 bg-black/30 px-3 py-2" />
         <select value={role} onChange={(e) => setRole(e.target.value as any)} className="rounded-lg border border-white/15 bg-black/30 px-3 py-2">
           <option value="staff">staff</option><option value="manager">manager</option><option value="owner">owner</option>
         </select>
+        <button type="button" onClick={() => setPassword(Math.random().toString(36).slice(-8))} className="rounded-lg bg-violet-600 px-3 py-2 font-semibold">สุ่มรหัส</button>
         <button className="rounded-lg bg-cyan-600 px-3 py-2 font-semibold">เพิ่มบัญชี</button>
       </form>
 

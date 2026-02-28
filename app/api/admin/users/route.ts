@@ -22,12 +22,20 @@ export async function POST(req: Request) {
 
   try {
     if (action === "create") {
-      const username = String(body.username || "").trim();
-      const password = String(body.password || "");
-      const role = body.role as "owner" | "manager" | "staff";
-      if (!username || password.length < 6 || !["owner", "manager", "staff"].includes(role)) {
-        return NextResponse.json({ ok: false, message: "ข้อมูลไม่ครบ" }, { status: 400 });
+      const username = String(body.username || "").trim().toLowerCase();
+      const password = String(body.password || "").trim();
+      const role = String(body.role || "") as "owner" | "manager" | "staff";
+
+      if (!username) {
+        return NextResponse.json({ ok: false, message: "กรอก username" }, { status: 400 });
       }
+      if (password.length < 4) {
+        return NextResponse.json({ ok: false, message: "password ต้องอย่างน้อย 4 ตัว" }, { status: 400 });
+      }
+      if (!["owner", "manager", "staff"].includes(role)) {
+        return NextResponse.json({ ok: false, message: "role ไม่ถูกต้อง" }, { status: 400 });
+      }
+
       const admin = createAdminUser({ username, password, role }, me.username);
       return NextResponse.json({ ok: true, admin });
     }
