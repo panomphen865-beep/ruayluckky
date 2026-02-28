@@ -80,16 +80,6 @@ export default function Page() {
           </article>
         </section>
 
-        <section className="mt-6 grid gap-3 md:grid-cols-2">
-          <a href="/dashboard" className="rounded-2xl border border-cyan-500/30 bg-cyan-950/30 p-4 hover:border-cyan-300">
-            <h3 className="text-xl font-bold text-cyan-300">หน้าโชว์สถิติลูกค้า</h3>
-            <p className="text-sm text-zinc-300">ดูเกมฮิต ผู้เล่นออนไลน์ และยอดหมุนเวียน</p>
-          </a>
-          <a href="/admin" className="rounded-2xl border border-violet-500/30 bg-violet-950/30 p-4 hover:border-violet-300">
-            <h3 className="text-xl font-bold text-violet-300">หน้าหลังบ้าน (Admin)</h3>
-            <p className="text-sm text-zinc-300">สรุปสมาชิก ฝากถอน โปรโมชัน และรายงาน</p>
-          </a>
-        </section>
 
         <footer className="mt-8 border-t border-white/10 pt-6 text-sm text-zinc-400">
           <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
