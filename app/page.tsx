@@ -1,12 +1,12 @@
 import Image from "next/image";
 
 const navItems = [
-  { icon: "🎰", label: "คาสิโน" },
-  { icon: "🪙", label: "สล็อต" },
-  { icon: "⚽", label: "กีฬา" },
-  { icon: "🐟", label: "ยิงปลา" },
-  { icon: "🎯", label: "หวย" },
-  { icon: "🃏", label: "เกมไพ่" },
+  { icon: "🎰", label: "คาสิโน", href: "#" },
+  { icon: "🪙", label: "สล็อต", href: "#" },
+  { icon: "⚽", label: "กีฬา", href: "#" },
+  { icon: "🐟", label: "ยิงปลา", href: "#" },
+  { icon: "🎁", label: "โปรโมชัน", href: "/promotion" },
+  { icon: "🃏", label: "เกมไพ่", href: "#" },
 ];
 
 const featureCards = [
@@ -31,8 +31,8 @@ export default function Page() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <button className="ruay-btn-secondary">เข้าสู่ระบบ</button>
-              <button className="ruay-btn-primary">สมัครสมาชิก</button>
+              <a href="/sign-in" className="ruay-btn-secondary">เข้าสู่ระบบ</a>
+              <a href="/register" className="ruay-btn-primary">สมัครสมาชิก</a>
             </div>
           </div>
 
@@ -40,7 +40,7 @@ export default function Page() {
             {navItems.map((item) => (
               <a
                 key={item.label}
-                href="#"
+                href={item.href}
                 className="focus-ring rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-center text-sm transition hover:border-yellow-300/30 hover:bg-white/10"
               >
                 <span className="mr-1">{item.icon}</span>
@@ -80,10 +80,24 @@ export default function Page() {
           </article>
         </section>
 
+        <section className="mt-6 grid gap-3 md:grid-cols-2">
+          <a href="/dashboard" className="rounded-2xl border border-cyan-500/30 bg-cyan-950/30 p-4 hover:border-cyan-300">
+            <h3 className="text-xl font-bold text-cyan-300">หน้าโชว์สถิติลูกค้า</h3>
+            <p className="text-sm text-zinc-300">ดูเกมฮิต ผู้เล่นออนไลน์ และยอดหมุนเวียน</p>
+          </a>
+          <a href="/admin" className="rounded-2xl border border-violet-500/30 bg-violet-950/30 p-4 hover:border-violet-300">
+            <h3 className="text-xl font-bold text-violet-300">หน้าหลังบ้าน (Admin)</h3>
+            <p className="text-sm text-zinc-300">สรุปสมาชิก ฝากถอน โปรโมชัน และรายงาน</p>
+          </a>
+        </section>
+
         <footer className="mt-8 border-t border-white/10 pt-6 text-sm text-zinc-400">
-          <div className="flex flex-col gap-1 md:flex-row md:items-center md:justify-between">
+          <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
             <p>© {new Date().getFullYear()} ruayluckky</p>
-            <p>พร้อมอัปเดตภาพเพิ่มได้อีกทันที</p>
+            <div className="flex items-center gap-3">
+              <a href="/compliance" className="text-yellow-300 hover:underline">Compliance Center</a>
+              <p>พร้อมอัปเดตภาพเพิ่มได้อีกทันที</p>
+            </div>
           </div>
         </footer>
       </div>
