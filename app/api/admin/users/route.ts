@@ -17,8 +17,8 @@ export async function GET() {
   if (me.role !== "owner") return NextResponse.json({ ok: false, message: "เฉพาะ owner" }, { status: 403 });
 
   try {
-    await ensureDb();
     if (db) {
+      await ensureDb();
       const rows = await db`SELECT id, username, role, active, created_at FROM admin_users ORDER BY id ASC`;
       return NextResponse.json({ ok: true, admins: rows.map((r) => ({ id: String(r.id), username: r.username, role: r.role, active: r.active, createdAt: r.created_at })) });
     }
@@ -49,8 +49,8 @@ export async function POST(req: Request) {
       if (password.length < 4) return NextResponse.json({ ok: false, message: "password ต้องอย่างน้อย 4 ตัว" }, { status: 400 });
       if (!["owner", "manager", "staff"].includes(role)) return NextResponse.json({ ok: false, message: "role ไม่ถูกต้อง" }, { status: 400 });
 
-      await ensureDb();
       if (db) {
+        await ensureDb();
         const exists = await db`SELECT id FROM admin_users WHERE username=${username} LIMIT 1`;
         if (exists.length) return NextResponse.json({ ok: false, message: "username นี้มีอยู่แล้ว" }, { status: 400 });
         const ph = hashPassword(password);
@@ -68,8 +68,8 @@ export async function POST(req: Request) {
       const newPassword = String(body.newPassword || "").trim();
       if (newPassword.length < 4) return NextResponse.json({ ok: false, message: "รหัสต้อง >=4" }, { status: 400 });
 
-      await ensureDb();
       if (db) {
+        await ensureDb();
         const ph = hashPassword(newPassword);
         await db`UPDATE admin_users SET password_hash=${ph} WHERE id=${Number(adminId)}`;
         return NextResponse.json({ ok: true });
@@ -82,8 +82,8 @@ export async function POST(req: Request) {
     if (action === "deactivate") {
       const adminId = String(body.adminId || "");
 
-      await ensureDb();
       if (db) {
+        await ensureDb();
         const owner = await db`SELECT role FROM admin_users WHERE id=${Number(adminId)} LIMIT 1`;
         if (owner[0]?.role === "owner") return NextResponse.json({ ok: false, message: "CANNOT_DISABLE_OWNER" }, { status: 400 });
         await db`UPDATE admin_users SET active=false WHERE id=${Number(adminId)}`;
