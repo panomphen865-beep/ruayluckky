@@ -1,8 +1,4 @@
-const rows = [
-  { id: "GW-001", channel: "QR code", method: "ฝาก", amount: 2000, user: "pong007", bank: "K PLUS", status: "พร้อมใช้", checkedAt: "07:07" },
-  { id: "GW-002", channel: "QR code", method: "ฝาก", amount: 500, user: "mina22", bank: "TrueMoney", status: "พร้อมใช้", checkedAt: "06:58" },
-  { id: "GW-003", channel: "QR code", method: "ถอน", amount: 300, user: "aey89", bank: "SCB", status: "ติดตาม", checkedAt: "06:53" },
-];
+const rows: Array<{ id: string; channel: string; method: string; amount: number; user: string; bank: string; status: string; checkedAt: string }> = [];
 
 export default function Page() {
   return (
@@ -24,7 +20,9 @@ export default function Page() {
                 </tr>
               </thead>
               <tbody>
-                {rows.map((r) => (
+                {rows.length === 0 ? (
+                  <tr><td colSpan={9} className="px-3 py-2">ยังไม่มีข้อมูล</td></tr>
+                ) : rows.map((r) => (
                   <tr key={r.id} className="border-t border-zinc-700 bg-emerald-500/10">
                     <td className="px-3 py-2">{r.id}</td>
                     <td className="px-3 py-2">{r.channel}</td>
