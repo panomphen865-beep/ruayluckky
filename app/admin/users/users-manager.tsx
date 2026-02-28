@@ -24,11 +24,14 @@ export default function UsersManager() {
   async function createUser(e: React.FormEvent) {
     e.preventDefault();
     setMsg("");
-    const payload = { action: "create", username: username.trim().toLowerCase(), password: password.trim(), role };
+    const u = username.trim().toLowerCase();
+    if (u === "owner") return setMsg("ห้ามใช้ owner ซ้ำ ให้ใช้ชื่อใหม่ เช่น staff01");
+
+    const payload = { action: "create", username: u, password: password.trim(), role };
     const r = await fetch("/api/admin/users", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
     const d = await r.json();
     if (!r.ok) return setMsg(d.message || "ไม่สำเร็จ");
-    setUsername(""); setPassword(""); setRole("staff"); setMsg("เพิ่มบัญชีแล้ว");
+    setUsername(""); setPassword(""); setRole("staff"); setMsg(`เพิ่มบัญชีแล้ว: ${d.admin?.username || u}`);
     load();
   }
 
@@ -59,7 +62,7 @@ export default function UsersManager() {
         <button className="rounded-lg bg-cyan-600 px-3 py-2 font-semibold">เพิ่มบัญชี</button>
       </form>
 
-      {msg && <p className="text-sm text-yellow-300">{msg}</p>}
+      {msg && <p className="text-sm rounded-lg border border-yellow-500/40 bg-yellow-500/10 px-3 py-2 text-yellow-300">{msg}</p>}
 
       <div className="rounded-2xl border border-zinc-700 bg-zinc-900/70 p-4">
         <h2 className="mb-2 text-xl font-semibold">รายการแอดมิน</h2>

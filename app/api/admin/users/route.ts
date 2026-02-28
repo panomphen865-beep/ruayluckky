@@ -45,13 +45,14 @@ export async function POST(req: Request) {
       const role = String(body.role || "") as "owner" | "manager" | "staff";
 
       if (!username) return NextResponse.json({ ok: false, message: "กรอก username" }, { status: 400 });
+      if (username === "owner") return NextResponse.json({ ok: false, message: "username owner มีอยู่แล้ว ให้ใช้ชื่อใหม่ เช่น staff01" }, { status: 400 });
       if (password.length < 4) return NextResponse.json({ ok: false, message: "password ต้องอย่างน้อย 4 ตัว" }, { status: 400 });
       if (!["owner", "manager", "staff"].includes(role)) return NextResponse.json({ ok: false, message: "role ไม่ถูกต้อง" }, { status: 400 });
 
       await ensureDb();
       if (db) {
         const exists = await db`SELECT id FROM admin_users WHERE username=${username} LIMIT 1`;
-        if (exists.length) return NextResponse.json({ ok: false, message: "USERNAME_EXISTS" }, { status: 400 });
+        if (exists.length) return NextResponse.json({ ok: false, message: "username นี้มีอยู่แล้ว" }, { status: 400 });
         const ph = hashPassword(password);
         const rows = await db`INSERT INTO admin_users (username, role, password_hash, active) VALUES (${username}, ${role}, ${ph}, true) RETURNING id, username, role, active, created_at`;
         const r = rows[0];
