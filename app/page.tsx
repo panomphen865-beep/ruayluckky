@@ -1,10 +1,11 @@
 import Image from "next/image";
+import HeroSlider from "./components/HeroSlider";
 
 const navItems = [
   { icon: "🎰", label: "คาสิโน", href: "#" },
   { icon: "🪙", label: "สล็อต", href: "#" },
   { icon: "⚽", label: "กีฬา", href: "#" },
-  { icon: "🐟", label: "ยิงปลา", href: "#" },
+  { icon: "💳", label: "ฝากเงิน", href: "/deposit" },
   { icon: "🎁", label: "โปรโมชัน", href: "/promotion" },
   { icon: "🃏", label: "เกมไพ่", href: "#" },
 ];
@@ -41,30 +42,16 @@ export default function Page() {
               <a
                 key={item.label}
                 href={item.href}
-                className="focus-ring rounded-xl border border-white/10 bg-white/5 px-3 py-2 text-center text-sm transition hover:border-yellow-300/30 hover:bg-white/10"
+                className="focus-ring flex flex-col items-center justify-center rounded-xl border border-red-500/30 bg-gradient-to-b from-[#2b0608] to-[#120305] px-2 py-2 text-center text-xs font-semibold text-zinc-100 transition hover:border-yellow-300/50 hover:text-yellow-200"
               >
-                <span className="mr-1">{item.icon}</span>
-                {item.label}
+                <span className="mb-1 text-base">{item.icon}</span>
+                <span>{item.label}</span>
               </a>
             ))}
           </nav>
         </header>
 
-        <section className="mt-4 overflow-hidden rounded-2xl border border-red-700/60">
-          <Image src="/assets/ruayluckky/banner/slide-01.jpg" alt="RuayLucky Hero Banner" width={1400} height={800} className="h-auto w-full object-cover" priority />
-        </section>
-
-        <section className="mt-4 grid gap-3 md:grid-cols-3">
-          <article className="overflow-hidden rounded-2xl border border-yellow-500/20 bg-black/20">
-            <Image src="/assets/ruayluckky/banner/slide-01.jpg" alt="สไลด์ 1" width={1200} height={450} className="h-full w-full object-cover" />
-          </article>
-          <article className="overflow-hidden rounded-2xl border border-yellow-500/20 bg-black/20">
-            <Image src="/assets/ruayluckky/banner/slide-02.jpg" alt="สไลด์ 2" width={1200} height={450} className="h-full w-full object-cover" />
-          </article>
-          <article className="overflow-hidden rounded-2xl border border-yellow-500/20 bg-black/20">
-            <Image src="/assets/ruayluckky/banner/slide-03.jpg" alt="สไลด์ 3" width={1200} height={450} className="h-full w-full object-cover" />
-          </article>
-        </section>
+        <HeroSlider />
 
         <section className="mt-5 grid gap-3 md:grid-cols-3">
           {featureCards.map((card, idx) => (
