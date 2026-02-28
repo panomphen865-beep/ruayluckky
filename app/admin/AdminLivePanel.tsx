@@ -7,20 +7,20 @@ type Audit = { id: string; at: string; actor: string; role: string; action: stri
 type Me = { username: string; role: string };
 
 const menu = [
-  { label: "แดชบอร์ด", href: "/admin" },
-  { label: "รายการสมาชิก", href: "/admin/members" },
-  { label: "สมาชิกใหม่", href: "/admin/members/new" },
-  { label: "รายการแบล็คลิส", href: "/admin/members/black-list" },
-  { label: "ฝากถอนรายวัน", href: "/admin/transaction" },
-  { label: "ตรวจสอบ gateway", href: "/admin/transaction/gateway" },
-  { label: "คอมมิชชั่นแนะนำเพื่อน", href: "/admin/commission" },
-  { label: "ถอนยอดเสีย", href: "/admin/commission/lost-bonus" },
-  { label: "ตัดรอบบิล", href: "/admin/report/daily" },
-  { label: "รายงานการจัดการเครดิต", href: "/admin/report/credit-management" },
-  { label: "วิเคราะห์ลูกค้า", href: "/admin/report/analysis/customer" },
-  { label: "วงล้อ", href: "/admin/spin-wheel" },
-  { label: "รายการพนักงาน", href: "/admin/users" },
-  { label: "ตั้งค่า", href: "/admin/setting" },
+  { label: "แดชบอร์ด", href: "/admin", roles: ["owner", "manager", "staff"] },
+  { label: "รายการสมาชิก", href: "/admin/members", roles: ["owner", "manager", "staff"] },
+  { label: "สมาชิกใหม่", href: "/admin/members/new", roles: ["owner", "manager"] },
+  { label: "รายการแบล็คลิส", href: "/admin/members/black-list", roles: ["owner", "manager"] },
+  { label: "ฝากถอนรายวัน", href: "/admin/transaction", roles: ["owner", "manager", "staff"] },
+  { label: "ตรวจสอบ gateway", href: "/admin/transaction/gateway", roles: ["owner", "manager"] },
+  { label: "คอมมิชชั่นแนะนำเพื่อน", href: "/admin/commission", roles: ["owner", "manager"] },
+  { label: "ถอนยอดเสีย", href: "/admin/commission/lost-bonus", roles: ["owner", "manager"] },
+  { label: "ตัดรอบบิล", href: "/admin/report/daily", roles: ["owner", "manager"] },
+  { label: "รายงานการจัดการเครดิต", href: "/admin/report/credit-management", roles: ["owner", "manager"] },
+  { label: "วิเคราะห์ลูกค้า", href: "/admin/report/analysis/customer", roles: ["owner", "manager"] },
+  { label: "วงล้อ", href: "/admin/spin-wheel", roles: ["owner", "manager"] },
+  { label: "รายการพนักงาน", href: "/admin/users", roles: ["owner"] },
+  { label: "ตั้งค่า", href: "/admin/setting", roles: ["owner"] },
 ];
 
 export default function AdminLivePanel() {
@@ -74,7 +74,7 @@ export default function AdminLivePanel() {
         <p className="text-lg font-bold text-white">MGB</p>
         <p className="mt-1 text-xs text-zinc-400">ผู้ใช้: {me?.username || "-"} ({me?.role || "-"})</p>
         <ul className="mt-4 space-y-2 text-sm text-zinc-300">
-          {menu.map((m) => (
+          {menu.filter((m) => m.roles.includes((me?.role || "staff") as any)).map((m) => (
             <li key={m.href}>
               <a href={m.href} className="block rounded-lg px-3 py-2 hover:bg-white/10">• {m.label}</a>
             </li>
