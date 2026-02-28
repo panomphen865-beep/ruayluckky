@@ -28,7 +28,7 @@ export default function SignInPage() {
       return;
     }
 
-    router.push("/member/dashboard");
+    router.push("/member/home");
   }
 
   return (

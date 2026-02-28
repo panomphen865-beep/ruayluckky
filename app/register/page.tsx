@@ -32,7 +32,7 @@ export default function RegisterPage() {
       return;
     }
 
-    router.push("/member/dashboard");
+    router.push("/member/home");
   }
 
   return (
