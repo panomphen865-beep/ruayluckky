@@ -7,17 +7,20 @@ type Audit = { id: string; at: string; actor: string; role: string; action: stri
 type Me = { username: string; role: string };
 
 const menu = [
-  "แดชบอร์ด",
-  "รายการสมาชิก",
-  "รายการถอนเงินใหม่",
-  "ฝากถอน รายวัน",
-  "ตรวจสอบ Gateway",
-  "คอมมิชชั่นเพื่อน",
-  "สรุปผลพันธมิตร",
-  "ตั๋วรับแจ้ง",
-  "จัดการเครดิต",
-  "วิเคราะห์ลูกค้า",
-  "ตั้งค่า",
+  { label: "แดชบอร์ด", href: "/admin" },
+  { label: "รายการสมาชิก", href: "/admin/members" },
+  { label: "สมาชิกใหม่", href: "/admin/members/new" },
+  { label: "รายการแบล็คลิส", href: "/admin/members/black-list" },
+  { label: "ฝากถอนรายวัน", href: "/admin/transaction" },
+  { label: "ตรวจสอบ gateway", href: "/admin/transaction/gateway" },
+  { label: "คอมมิชชั่นแนะนำเพื่อน", href: "/admin/commission" },
+  { label: "ถอนยอดเสีย", href: "/admin/commission/lost-bonus" },
+  { label: "ตัดรอบบิล", href: "/admin/report/daily" },
+  { label: "รายงานการจัดการเครดิต", href: "/admin/report/credit-management" },
+  { label: "วิเคราะห์ลูกค้า", href: "/admin/report/analysis/customer" },
+  { label: "วงล้อ", href: "/admin/spin-wheel" },
+  { label: "รายการพนักงาน", href: "/admin/users" },
+  { label: "ตั้งค่า", href: "/admin/setting" },
 ];
 
 export default function AdminLivePanel() {
@@ -72,7 +75,9 @@ export default function AdminLivePanel() {
         <p className="mt-1 text-xs text-zinc-400">ผู้ใช้: {me?.username || "-"} ({me?.role || "-"})</p>
         <ul className="mt-4 space-y-2 text-sm text-zinc-300">
           {menu.map((m) => (
-            <li key={m} className="rounded-lg px-3 py-2 hover:bg-white/10">• {m}</li>
+            <li key={m.href}>
+              <a href={m.href} className="block rounded-lg px-3 py-2 hover:bg-white/10">• {m.label}</a>
+            </li>
           ))}
         </ul>
         <button onClick={logout} className="mt-4 w-full rounded-lg bg-red-600 px-3 py-2 text-sm font-semibold">ออกจากระบบ</button>

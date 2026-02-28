@@ -2,10 +2,12 @@ import fs from "node:fs";
 import path from "node:path";
 import crypto from "node:crypto";
 
+export type AdminRole = "owner" | "manager" | "staff";
+
 export type AdminUser = {
   id: string;
   username: string;
-  role: "owner" | "manager" | "staff";
+  role: AdminRole;
   passwordHash: string;
   active: boolean;
   createdAt: string;
@@ -15,7 +17,7 @@ type AdminSession = {
   token: string;
   adminId: string;
   username: string;
-  role: AdminUser["role"];
+  role: AdminRole;
   expiresAt: number;
 };
 
@@ -80,8 +82,16 @@ function verifyPassword(password: string, stored: string) {
   return crypto.timingSafeEqual(Buffer.from(hash, "hex"), Buffer.from(verify, "hex"));
 }
 
+function readAdmins() {
+  return readJson<AdminUser[]>(adminsFile, []);
+}
+
+function writeAdmins(admins: AdminUser[]) {
+  writeJson(adminsFile, admins);
+}
+
 export function findAdminByUsername(username: string) {
-  const admins = readJson<AdminUser[]>(adminsFile, []);
+  const admins = readAdmins();
   return admins.find((a) => a.username === username && a.active) || null;
 }
 
@@ -90,6 +100,49 @@ export function verifyAdminLogin(username: string, password: string) {
   if (!admin) return null;
   if (!verifyPassword(password, admin.passwordHash)) return null;
   return admin;
+}
+
+export function listAdmins() {
+  const admins = readAdmins();
+  return admins.map(({ passwordHash: _x, ...safe }) => safe);
+}
+
+export function createAdminUser(input: { username: string; password: string; role: AdminRole }, actor: string) {
+  const admins = readAdmins();
+  if (admins.some((a) => a.username === input.username)) throw new Error("USERNAME_EXISTS");
+
+  const admin: AdminUser = {
+    id: crypto.randomUUID(),
+    username: input.username,
+    role: input.role,
+    passwordHash: hashPassword(input.password),
+    active: true,
+    createdAt: new Date().toISOString(),
+  };
+  admins.push(admin);
+  writeAdmins(admins);
+  appendAudit({ actor, role: "owner", action: "create_admin", note: `${input.username} (${input.role})` });
+  return { id: admin.id, username: admin.username, role: admin.role, active: admin.active, createdAt: admin.createdAt };
+}
+
+export function resetAdminPassword(input: { adminId: string; newPassword: string }, actor: string) {
+  const admins = readAdmins();
+  const idx = admins.findIndex((a) => a.id === input.adminId && a.active);
+  if (idx < 0) throw new Error("NOT_FOUND");
+  admins[idx].passwordHash = hashPassword(input.newPassword);
+  writeAdmins(admins);
+  appendAudit({ actor, role: "owner", action: "reset_admin_password", note: admins[idx].username });
+}
+
+export function deactivateAdmin(input: { adminId: string }, actor: string) {
+  const admins = readAdmins();
+  const target = admins.find((a) => a.id === input.adminId && a.active);
+  if (!target) throw new Error("NOT_FOUND");
+  if (target.role === "owner") throw new Error("CANNOT_DISABLE_OWNER");
+
+  target.active = false;
+  writeAdmins(admins);
+  appendAudit({ actor, role: "owner", action: "deactivate_admin", note: target.username });
 }
 
 export function createAdminSession(admin: AdminUser) {
@@ -119,12 +172,16 @@ export function deleteAdminSession(token?: string) {
 export function appendAudit(entry: Omit<AuditLog, "id" | "at">) {
   const logs = readJson<AuditLog[]>(auditFile, []);
   logs.unshift({ id: crypto.randomUUID(), at: new Date().toISOString(), ...entry });
-  writeJson(auditFile, logs.slice(0, 500));
+  writeJson(auditFile, logs.slice(0, 1000));
 }
 
 export function getRecentAudits(limit = 30) {
   const logs = readJson<AuditLog[]>(auditFile, []);
   return logs.slice(0, limit);
+}
+
+export function getAllAudits() {
+  return readJson<AuditLog[]>(auditFile, []);
 }
 
 function todayStr() {
