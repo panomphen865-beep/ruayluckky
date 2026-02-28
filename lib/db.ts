@@ -52,4 +52,15 @@ export async function ensureDb() {
       created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
     );
   `;
+
+  await db`
+    CREATE TABLE IF NOT EXISTS member_users (
+      id SERIAL PRIMARY KEY,
+      username TEXT UNIQUE NOT NULL,
+      phone TEXT UNIQUE NOT NULL,
+      password_hash TEXT NOT NULL,
+      active BOOLEAN NOT NULL DEFAULT true,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+    );
+  `;
 }

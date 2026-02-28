@@ -15,6 +15,7 @@ export default function RegisterPage() {
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
     if (password !== confirm) return setMsg("รหัสผ่านไม่ตรงกัน");
+    if (password.length < 4) return setMsg("รหัสผ่านต้องอย่างน้อย 4 ตัว");
     setLoading(true);
     setMsg("");
 
