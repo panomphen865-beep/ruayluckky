@@ -1,18 +1,20 @@
 import { NextResponse } from "next/server";
-import { appendAudit, createAdminSession, verifyAdminPassword } from "@/lib/admin-store";
+import { appendAudit, createAdminSession, verifyAdminLogin } from "@/lib/admin-store";
 
 export async function POST(req: Request) {
   const body = await req.json();
+  const username = String(body.username || "").trim();
   const password = String(body.password || "");
-  const actor = String(body.actor || "admin");
 
-  if (!verifyAdminPassword(password)) {
-    return NextResponse.json({ ok: false, message: "รหัสแอดมินไม่ถูกต้อง" }, { status: 401 });
+  const admin = verifyAdminLogin(username, password);
+  if (!admin) {
+    return NextResponse.json({ ok: false, message: "ยูสเซอร์หรือรหัสไม่ถูกต้อง" }, { status: 401 });
   }
 
-  const token = createAdminSession();
-  appendAudit({ actor, action: "admin_login" });
-  const res = NextResponse.json({ ok: true });
+  const token = createAdminSession(admin);
+  appendAudit({ actor: admin.username, role: admin.role, action: "admin_login" });
+
+  const res = NextResponse.json({ ok: true, admin: { username: admin.username, role: admin.role } });
   res.cookies.set("admin_session", token, { httpOnly: true, sameSite: "lax", secure: false, path: "/", maxAge: 60 * 60 * 24 * 7 });
   return res;
 }

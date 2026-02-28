@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 
 type Stats = { date: string; deposit: number; withdraw: number; moneyLost: number; transactions: number };
-type Audit = { id: string; at: string; actor: string; action: string; amount?: number; note?: string };
+type Audit = { id: string; at: string; actor: string; role: string; action: string; amount?: number; note?: string };
+type Me = { username: string; role: string };
 
 const menu = [
   "แดชบอร์ด",
@@ -22,7 +23,7 @@ const menu = [
 export default function AdminLivePanel() {
   const [stats, setStats] = useState<Stats | null>(null);
   const [audits, setAudits] = useState<Audit[]>([]);
-  const [actor, setActor] = useState("");
+  const [me, setMe] = useState<Me | null>(null);
   const [amount, setAmount] = useState("");
   const [note, setNote] = useState("");
   const [kind, setKind] = useState<"deposit" | "withdraw" | "loss">("deposit");
@@ -34,6 +35,7 @@ export default function AdminLivePanel() {
     const data = await r.json();
     setStats(data.stats);
     setAudits(data.audits || []);
+    setMe(data.me || null);
   }
 
   useEffect(() => {
@@ -48,7 +50,7 @@ export default function AdminLivePanel() {
     const r = await fetch("/api/admin/record", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ kind, amount: Number(amount), actor, note }),
+      body: JSON.stringify({ kind, amount: Number(amount), note }),
     });
     const data = await r.json();
     if (!r.ok) return setMsg(data.message || "บันทึกไม่สำเร็จ");
@@ -67,6 +69,7 @@ export default function AdminLivePanel() {
     <div className="grid gap-4 lg:grid-cols-[260px_1fr]">
       <aside className="rounded-2xl border border-indigo-900 bg-[#11162b] p-4">
         <p className="text-lg font-bold text-white">MGB</p>
+        <p className="mt-1 text-xs text-zinc-400">ผู้ใช้: {me?.username || "-"} ({me?.role || "-"})</p>
         <ul className="mt-4 space-y-2 text-sm text-zinc-300">
           {menu.map((m) => (
             <li key={m} className="rounded-lg px-3 py-2 hover:bg-white/10">• {m}</li>
@@ -96,8 +99,7 @@ export default function AdminLivePanel() {
 
         <section className="rounded-2xl border border-zinc-700 bg-zinc-900/70 p-4">
           <h2 className="text-lg font-semibold text-yellow-200">บันทึกรายการสด (รีเซ็ตอัตโนมัติทุกวัน)</h2>
-          <form onSubmit={submitRecord} className="mt-3 grid gap-2 md:grid-cols-5">
-            <input value={actor} onChange={(e) => setActor(e.target.value)} placeholder="ชื่อคนทำงาน" className="rounded-lg border border-white/15 bg-black/30 px-3 py-2" />
+          <form onSubmit={submitRecord} className="mt-3 grid gap-2 md:grid-cols-4">
             <select value={kind} onChange={(e) => setKind(e.target.value as "deposit" | "withdraw" | "loss")} className="rounded-lg border border-white/15 bg-black/30 px-3 py-2">
               <option value="deposit">ฝาก</option>
               <option value="withdraw">ถอน</option>
@@ -111,11 +113,11 @@ export default function AdminLivePanel() {
         </section>
 
         <section className="rounded-2xl border border-zinc-700 bg-zinc-900/70 p-4">
-          <h2 className="text-lg font-semibold text-yellow-200">Audit Log (ใครทำอะไร)</h2>
+          <h2 className="text-lg font-semibold text-yellow-200">Audit Log (รู้ว่าใครทำอะไร)</h2>
           <div className="mt-2 max-h-[300px] overflow-auto text-sm">
             {audits.map((a) => (
               <div key={a.id} className="border-b border-zinc-700 py-2">
-                <p><span className="text-zinc-400">{new Date(a.at).toLocaleString()}</span> • <span className="text-cyan-300">{a.actor}</span> • {a.action} {a.amount ? `฿${a.amount.toLocaleString()}` : ""}</p>
+                <p><span className="text-zinc-400">{new Date(a.at).toLocaleString()}</span> • <span className="text-cyan-300">{a.actor}</span> ({a.role}) • {a.action} {a.amount ? `฿${a.amount.toLocaleString()}` : ""}</p>
                 {a.note && <p className="text-zinc-300">หมายเหตุ: {a.note}</p>}
               </div>
             ))}
