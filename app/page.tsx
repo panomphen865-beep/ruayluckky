@@ -1,5 +1,6 @@
 import Image from "next/image";
 import HeroSlider from "./components/HeroSlider";
+import DepositQuickPanel from "./components/DepositQuickPanel";
 
 const navItems = [
   { icon: "🎰", label: "คาสิโน", href: "#" },
@@ -78,6 +79,8 @@ export default function Page() {
             <Image src="/assets/ruayluckky/promo/promo-vip.jpg" alt="โปรโมชัน VIP" width={1200} height={900} className="h-full w-full object-cover" />
           </article>
         </section>
+
+        <DepositQuickPanel />
 
 
         <footer className="mt-8 border-t border-white/10 pt-6 text-sm text-zinc-400">
