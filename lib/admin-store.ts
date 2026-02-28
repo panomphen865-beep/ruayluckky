@@ -35,23 +35,31 @@ const adminsFile = path.join(dataDir, "admin-users.json");
 const adminSessionFile = path.join(dataDir, "admin-sessions.json");
 const auditFile = path.join(dataDir, "admin-audit.json");
 const dailyFile = path.join(dataDir, "admin-daily.json");
+const sessionSecret = process.env.ADMIN_SESSION_SECRET || "payanak-session-secret";
+
+function getDefaultAdmin(): AdminUser {
+  return {
+    id: "owner-default",
+    username: process.env.ADMIN_USER || "owner",
+    role: "owner",
+    passwordHash: hashPassword(process.env.ADMIN_PASSWORD || "payanak-2026"),
+    active: true,
+    createdAt: new Date().toISOString(),
+  };
+}
 
 function ensure() {
-  if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
-  if (!fs.existsSync(adminSessionFile)) fs.writeFileSync(adminSessionFile, "[]", "utf8");
-  if (!fs.existsSync(auditFile)) fs.writeFileSync(auditFile, "[]", "utf8");
-  if (!fs.existsSync(dailyFile)) fs.writeFileSync(dailyFile, "{}", "utf8");
+  try {
+    if (!fs.existsSync(dataDir)) fs.mkdirSync(dataDir, { recursive: true });
+    if (!fs.existsSync(adminSessionFile)) fs.writeFileSync(adminSessionFile, "[]", "utf8");
+    if (!fs.existsSync(auditFile)) fs.writeFileSync(auditFile, "[]", "utf8");
+    if (!fs.existsSync(dailyFile)) fs.writeFileSync(dailyFile, "{}", "utf8");
 
-  if (!fs.existsSync(adminsFile)) {
-    const defaultAdmin: AdminUser = {
-      id: crypto.randomUUID(),
-      username: process.env.ADMIN_USER || "owner",
-      role: "owner",
-      passwordHash: hashPassword(process.env.ADMIN_PASSWORD || "payanak-2026"),
-      active: true,
-      createdAt: new Date().toISOString(),
-    };
-    fs.writeFileSync(adminsFile, JSON.stringify([defaultAdmin], null, 2), "utf8");
+    if (!fs.existsSync(adminsFile)) {
+      fs.writeFileSync(adminsFile, JSON.stringify([getDefaultAdmin()], null, 2), "utf8");
+    }
+  } catch {
+    // Read-only filesystem on serverless (Vercel): fallback to env-based defaults.
   }
 }
 
@@ -83,7 +91,8 @@ function verifyPassword(password: string, stored: string) {
 }
 
 function readAdmins() {
-  return readJson<AdminUser[]>(adminsFile, []);
+  const admins = readJson<AdminUser[]>(adminsFile, []);
+  return admins.length ? admins : [getDefaultAdmin()];
 }
 
 function writeAdmins(admins: AdminUser[]) {
@@ -146,27 +155,39 @@ export function deactivateAdmin(input: { adminId: string }, actor: string) {
 }
 
 export function createAdminSession(admin: AdminUser) {
-  const sessions = readJson<AdminSession[]>(adminSessionFile, []);
-  const token = crypto.randomBytes(32).toString("hex");
-  sessions.push({ token, adminId: admin.id, username: admin.username, role: admin.role, expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000 });
-  writeJson(adminSessionFile, sessions);
-  return token;
+  const payload: AdminSession = {
+    token: "",
+    adminId: admin.id,
+    username: admin.username,
+    role: admin.role,
+    expiresAt: Date.now() + 7 * 24 * 60 * 60 * 1000,
+  };
+  const encoded = Buffer.from(JSON.stringify(payload)).toString("base64url");
+  const sig = crypto.createHmac("sha256", sessionSecret).update(encoded).digest("hex");
+  return `${encoded}.${sig}`;
 }
 
 export function getAdminSession(token?: string) {
   if (!token) return null;
-  const sessions = readJson<AdminSession[]>(adminSessionFile, []);
-  return sessions.find((s) => s.token === token && s.expiresAt > Date.now()) || null;
+  const [encoded, sig] = token.split(".");
+  if (!encoded || !sig) return null;
+  const expected = crypto.createHmac("sha256", sessionSecret).update(encoded).digest("hex");
+  if (expected !== sig) return null;
+  try {
+    const parsed = JSON.parse(Buffer.from(encoded, "base64url").toString("utf8")) as AdminSession;
+    if (parsed.expiresAt < Date.now()) return null;
+    return parsed;
+  } catch {
+    return null;
+  }
 }
 
 export function hasValidAdminSession(token?: string) {
   return !!getAdminSession(token);
 }
 
-export function deleteAdminSession(token?: string) {
-  if (!token) return;
-  const sessions = readJson<AdminSession[]>(adminSessionFile, []);
-  writeJson(adminSessionFile, sessions.filter((s) => s.token !== token));
+export function deleteAdminSession(_token?: string) {
+  return;
 }
 
 export function appendAudit(entry: Omit<AuditLog, "id" | "at">) {
