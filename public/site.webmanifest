@@ -1,0 +1,20 @@
+{
+  "name": "Ruayluckky",
+  "short_name": "Ruayluckky",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#12070b",
+  "theme_color": "#7a1018",
+  "icons": [
+    {
+      "src": "/app/icon.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "/app/icon.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
