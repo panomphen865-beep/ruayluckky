@@ -20,7 +20,15 @@ export async function GET() {
     if (db) {
       await ensureDb();
       const rows = await db`SELECT id, username, role, active, created_at FROM admin_users ORDER BY id ASC`;
-      return NextResponse.json({ ok: true, admins: rows.map((r) => ({ id: String(r.id), username: r.username, role: r.role, active: r.active, createdAt: r.created_at })) });
+      const dbAdmins = rows.map((r) => ({ id: String(r.id), username: r.username, role: r.role, active: r.active, createdAt: r.created_at }));
+      const fallbackAdmins = listAdmins();
+
+      const merged = [...dbAdmins];
+      for (const fa of fallbackAdmins) {
+        if (!merged.some((x) => x.username === fa.username)) merged.push(fa as any);
+      }
+
+      return NextResponse.json({ ok: true, admins: merged });
     }
   } catch {
     // fallback
