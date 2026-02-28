@@ -22,8 +22,8 @@ export default function Page() {
         <header className="ruay-panel overflow-hidden rounded-2xl border border-red-800/60">
           <div className="flex items-center justify-between gap-3 bg-gradient-to-r from-[#3b0508] via-[#5b0c10] to-[#3b0508] px-4 py-3">
             <div className="flex items-center gap-3">
-              <div className="h-10 w-10 overflow-hidden rounded-full border border-yellow-300/40">
-                <Image src="/assets/ruayluckky/logo/logo-main.jpg" alt="RuayLucky Logo" width={80} height={80} className="h-full w-full object-cover" />
+              <div className="h-10 w-28 overflow-hidden rounded-lg border border-yellow-300/40 bg-black/20">
+                <Image src="/assets/ruayluckky/logo/logo-main.jpg" alt="RuayLucky Logo" width={280} height={100} className="h-full w-full object-cover" />
               </div>
               <div>
                 <p className="text-lg font-black tracking-wide text-yellow-300">RUAYLUCKKY</p>
