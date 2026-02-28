@@ -1,13 +1,18 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 import { parseMemberToken } from "@/lib/member-auth";
+import Image from "next/image";
 
-const cards = [
-  { title: "🎮 เข้าเล่นเกม", desc: "เข้าไปเลือกเกมที่ต้องการเล่น", href: "https://fruit-bowl-game.vercel.app" },
-  { title: "💳 ฝากเงิน", desc: "ดูบัญชีและแจ้งโอนเงิน", href: "/deposit" },
-  { title: "🎁 โปรโมชั่น", desc: "รับสิทธิ์และโบนัสล่าสุด", href: "/promotion" },
-  { title: "📣 กิจกรรม", desc: "กิจกรรมพิเศษและของรางวัล", href: "/activities" },
+const quick = [
+  { icon: "🎰", title: "สล็อต", href: "https://fruit-bowl-game.vercel.app" },
+  { icon: "🃏", title: "บาคาร่า", href: "#" },
+  { icon: "⚽", title: "กีฬา", href: "#" },
+  { icon: "💳", title: "ฝากเงิน", href: "/deposit" },
+  { icon: "🎁", title: "โปรโมชั่น", href: "/promotion" },
+  { icon: "🎉", title: "กิจกรรม", href: "/activities" },
 ];
+
+const games = ["Fiery Boxing", "Aztec Empire", "Mahjong Gold", "Roma", "Dragon", "Fortune Tiger"];
 
 export default async function MemberHomePage() {
   const token = (await cookies()).get("mf_session")?.value;
@@ -15,23 +20,39 @@ export default async function MemberHomePage() {
   if (!user) redirect("/sign-in");
 
   return (
-    <main className="min-h-screen bg-[#10070b] text-white p-6 md:p-10">
-      <div className="mx-auto max-w-5xl space-y-5">
-        <div className="rounded-2xl border border-red-700/40 bg-gradient-to-r from-[#4f090e] to-[#24060a] p-4">
-          <h1 className="text-2xl font-bold text-yellow-300">ยินดีต้อนรับ {user.username}</h1>
-          <p className="text-sm text-zinc-200">หน้าโฮมลูกค้า: เข้าเล่นเกม ฝากเงิน โปรโมชั่น และกิจกรรม</p>
-        </div>
+    <main className="min-h-screen bg-[#12070b] text-white p-4 md:p-8">
+      <div className="mx-auto max-w-5xl space-y-4">
+        <header className="rounded-2xl border border-red-700/40 bg-gradient-to-r from-[#5a0b10] to-[#2a070a] p-4">
+          <h1 className="text-2xl font-bold text-yellow-300">สวัสดี {user.username}</h1>
+          <p className="text-sm text-zinc-200">หน้าเล่นของลูกค้า • เลือกเกม ฝากเงิน โปรโมชั่น กิจกรรม</p>
+        </header>
 
-        <section className="grid gap-3 md:grid-cols-2">
-          {cards.map((c) => (
-            <a key={c.title} href={c.href} className="rounded-2xl border border-red-500/30 bg-zinc-900/60 p-4 hover:border-yellow-300/50">
-              <h2 className="text-xl font-bold text-yellow-200">{c.title}</h2>
-              <p className="mt-1 text-sm text-zinc-300">{c.desc}</p>
+        <section className="rounded-2xl border border-red-700/40 bg-black/30 p-2 overflow-hidden">
+          <Image src="/assets/ruayluckky/banner/slide-01.jpg" alt="banner" width={1200} height={420} className="h-auto w-full rounded-xl object-cover" />
+        </section>
+
+        <section className="grid grid-cols-3 gap-2 rounded-2xl border border-red-700/40 bg-black/30 p-3 md:grid-cols-6">
+          {quick.map((q) => (
+            <a key={q.title} href={q.href} className="rounded-xl border border-red-500/30 bg-gradient-to-b from-[#2b0608] to-[#120305] p-2 text-center hover:border-yellow-300/50">
+              <div className="text-lg">{q.icon}</div>
+              <div className="text-xs font-semibold">{q.title}</div>
             </a>
           ))}
         </section>
 
-        <form action="/api/auth/logout" method="post">
+        <section className="rounded-2xl border border-red-700/40 bg-black/30 p-4">
+          <h2 className="mb-2 text-lg font-bold text-yellow-300">เกมยอดฮิต</h2>
+          <div className="grid gap-2 sm:grid-cols-2 md:grid-cols-3">
+            {games.map((g) => (
+              <a key={g} href="https://fruit-bowl-game.vercel.app" className="rounded-xl border border-red-500/30 bg-zinc-900/60 p-3">
+                <p className="font-semibold">{g}</p>
+                <p className="text-xs text-zinc-300">เข้าเล่นทันที</p>
+              </a>
+            ))}
+          </div>
+        </section>
+
+        <form action="/api/auth/logout" method="post" className="pb-6">
           <button className="rounded-xl bg-red-600 px-4 py-2 font-semibold">ออกจากระบบ</button>
         </form>
       </div>

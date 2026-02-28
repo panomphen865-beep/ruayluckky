@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db, ensureDb } from "@/lib/db";
 import { createMemberToken, hashPassword } from "@/lib/member-auth";
-import { createSession, createUser } from "@/lib/auth-store";
+import { createUser } from "@/lib/auth-store";
 
 export async function POST(req: Request) {
   try {
@@ -14,6 +14,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ ok: false, message: "กรอกข้อมูลไม่ครบ หรือรหัสสั้นเกินไป" }, { status: 400 });
     }
 
+    // Primary path: DB
     try {
       if (db) {
         await ensureDb();
@@ -33,8 +34,9 @@ export async function POST(req: Request) {
       // fallback below
     }
 
+    // Fallback path: file store
     const user = createUser({ username, phone, password });
-    const token = createSession(user.id);
+    const token = createMemberToken({ userId: user.id, username: user.username, phone: user.phone });
     const res = NextResponse.json({ ok: true, user: { id: user.id, username: user.username, phone: user.phone } });
     res.cookies.set("mf_session", token, { httpOnly: true, sameSite: "lax", secure: false, path: "/", maxAge: 60 * 60 * 24 * 7 });
     return res;

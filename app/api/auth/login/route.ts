@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db, ensureDb } from "@/lib/db";
 import { createMemberToken, verifyPassword } from "@/lib/member-auth";
-import { createSession, findUserByPhone, verifyPassword as verifyFilePassword } from "@/lib/auth-store";
+import { findUserByPhone, verifyPassword as verifyFilePassword } from "@/lib/auth-store";
 
 export async function POST(req: Request) {
   try {
@@ -9,6 +9,7 @@ export async function POST(req: Request) {
     const phone = String(body.phone || "").trim();
     const password = String(body.password || "");
 
+    // Primary path: DB
     try {
       if (db) {
         await ensureDb();
@@ -27,12 +28,13 @@ export async function POST(req: Request) {
       // fallback below
     }
 
+    // Fallback path: file store
     const user = findUserByPhone(phone);
     if (!user || !verifyFilePassword(password, user.passwordHash)) {
       return NextResponse.json({ ok: false, message: "เบอร์หรือรหัสผ่านไม่ถูกต้อง" }, { status: 401 });
     }
 
-    const token = createSession(user.id);
+    const token = createMemberToken({ userId: user.id, username: user.username, phone: user.phone });
     const res = NextResponse.json({ ok: true, user: { id: user.id, username: user.username, phone: user.phone } });
     res.cookies.set("mf_session", token, { httpOnly: true, sameSite: "lax", secure: false, path: "/", maxAge: 60 * 60 * 24 * 7 });
     return res;

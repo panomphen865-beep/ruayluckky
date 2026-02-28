@@ -3,7 +3,7 @@ import crypto from "node:crypto";
 const secret = process.env.MEMBER_SESSION_SECRET || "member-secret-payanak";
 
 export type MemberSession = {
-  userId: number;
+  userId: number | string;
   username: string;
   phone: string;
   expiresAt: number;
