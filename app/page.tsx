@@ -51,7 +51,19 @@ export default function Page() {
         </header>
 
         <section className="mt-4 overflow-hidden rounded-2xl border border-red-700/60">
-          <Image src="/assets/ruayluckky/banner/hero-banner.jpg" alt="RuayLucky Hero Banner" width={1400} height={800} className="h-auto w-full object-cover" priority />
+          <Image src="/assets/ruayluckky/banner/slide-01.jpg" alt="RuayLucky Hero Banner" width={1400} height={800} className="h-auto w-full object-cover" priority />
+        </section>
+
+        <section className="mt-4 grid gap-3 md:grid-cols-3">
+          <article className="overflow-hidden rounded-2xl border border-yellow-500/20 bg-black/20">
+            <Image src="/assets/ruayluckky/banner/slide-01.jpg" alt="สไลด์ 1" width={1200} height={450} className="h-full w-full object-cover" />
+          </article>
+          <article className="overflow-hidden rounded-2xl border border-yellow-500/20 bg-black/20">
+            <Image src="/assets/ruayluckky/banner/slide-02.jpg" alt="สไลด์ 2" width={1200} height={450} className="h-full w-full object-cover" />
+          </article>
+          <article className="overflow-hidden rounded-2xl border border-yellow-500/20 bg-black/20">
+            <Image src="/assets/ruayluckky/banner/slide-03.jpg" alt="สไลด์ 3" width={1200} height={450} className="h-full w-full object-cover" />
+          </article>
         </section>
 
         <section className="mt-5 grid gap-3 md:grid-cols-3">
