@@ -1,35 +1,27 @@
 // lib/askmebet.ts
-// Utility for calling AskMeBet API from server components
+type Payload = Record<string, any>;
 
-const domain = process.env.ASKMEBET_DOMAIN || "";
-const agentUsername = process.env.ASKMEBET_AGENT_USERNAME || "";
-const key = process.env.ASKMEBET_KEY || "";
-const web = process.env.ASKMEBET_WEB || process.env.ASKMEBET_BASE_URL || "";
+export async function askmebetPost(path: string, payload: Payload) {
+const domain = process.env.ASKMEBET_DOMAIN ?? "";
+const agentUsername = process.env.ASKMEBET_AGENT_USERNAME ?? "";
+const key = process.env.ASKMEBET_KEY ?? "";
+const web = process.env.ASKMEBET_WEB ?? "";
 
+// สำคัญ: check ตรงนี้ตอน "เรียกฟังก์ชัน" เท่านั้น
 if (!domain) throw new Error("missing_ASKMEBET_DOMAIN");
 if (!agentUsername) throw new Error("missing_ASKMEBET_AGENT_USERNAME");
 if (!key) throw new Error("missing_ASKMEBET_KEY");
 
-export async function askmebetPost(path: string, payload: Record<string, any>) {
-  const url = `${domain}${path}`;
+const url = `${domain}${path}`;
+const body = { agentUsername, key, web, ...payload };
 
-  const body = {
-    ...payload,
-    agentUsername,
-    key,
-    web,
-  };
+const res = await fetch(url, {
+method: "POST",
+headers: { "Content-Type": "application/json" },
+body: JSON.stringify(body),
+cache: "no-store",
+});
 
-  const res = await fetch(url, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(body),
-  });
-
-  if (!res.ok) {
-    const text = await res.text();
-    throw new Error(`askmebet request failed: ${res.status} ${text}`);
-  }
-
-  return res.json();
+const data = await res.json().catch(() => ({}));
+return data;
 }
