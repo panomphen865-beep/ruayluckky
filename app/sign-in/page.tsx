@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 
 export default function SignInPage() {
-  const [phone, setPhone] = useState("");
+  const [identity, setIdentity] = useState("");
   const [password, setPassword] = useState("");
   const [msg, setMsg] = useState("");
   const [loading, setLoading] = useState(false);
@@ -14,37 +14,49 @@ export default function SignInPage() {
     e.preventDefault();
     setLoading(true);
     setMsg("");
-
-    const r = await fetch("/api/auth/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ phone, password }),
-    });
-    const data = await r.json();
-    setLoading(false);
-
-    if (!r.ok) {
-      setMsg(data.message || "เข้าสู่ระบบไม่สำเร็จ");
-      return;
+    try {
+      const r = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ phone: identity.trim(), password }),
+      });
+      const data = await r.json();
+      if (!r.ok) return setMsg(data.message || "เข้าสู่ระบบไม่สำเร็จ");
+      router.push("/member/home");
+    } catch {
+      setMsg("เชื่อมต่อเซิร์ฟเวอร์ไม่สำเร็จ");
+    } finally {
+      setLoading(false);
     }
-
-    router.push("/member/home");
   }
 
   return (
-    <main className="min-h-screen bg-[#0f1115] text-white p-6 md:p-10">
-      <div className="mx-auto max-w-md rounded-2xl border border-red-700/60 bg-gradient-to-br from-[#4a070b] to-[#1f0508] p-6">
-        <h1 className="text-2xl font-bold text-yellow-300">เข้าสู่ระบบ</h1>
-        <p className="mt-1 text-sm text-zinc-300">เข้าสู่ระบบสมาชิกเพื่อใช้งานแดชบอร์ด</p>
+    <main className="min-h-screen bg-[#0b0f1a] text-white p-4 md:p-10">
+      <div className="mx-auto w-full max-w-md rounded-2xl border border-white/10 bg-[#141a2a] p-6 shadow-2xl">
+        <h1 className="text-3xl font-bold text-white">เข้าสู่ระบบ</h1>
+        <p className="mt-1 text-sm text-zinc-300">ใช้เบอร์โทรหรือยูสเซอร์เนมเพื่อเข้าใช้งาน</p>
 
         <form onSubmit={onSubmit} className="mt-5 space-y-3">
-          <input value={phone} onChange={(e) => setPhone(e.target.value)} className="w-full rounded-xl border border-white/15 bg-black/30 px-3 py-2 outline-none" placeholder="เบอร์โทร" />
-          <input value={password} onChange={(e) => setPassword(e.target.value)} type="password" className="w-full rounded-xl border border-white/15 bg-black/30 px-3 py-2 outline-none" placeholder="รหัสผ่าน" />
-          <button disabled={loading} type="submit" className="w-full rounded-xl bg-gradient-to-r from-red-500 to-red-700 px-4 py-2 font-semibold disabled:opacity-60">
+          <input
+            value={identity}
+            onChange={(e) => setIdentity(e.target.value)}
+            placeholder="เบอร์โทร / username"
+            className="w-full rounded-xl border border-white/15 bg-[#0f1320] px-3 py-2 outline-none focus:border-blue-400"
+          />
+          <input
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            type="password"
+            placeholder="รหัสผ่าน"
+            className="w-full rounded-xl border border-white/15 bg-[#0f1320] px-3 py-2 outline-none focus:border-blue-400"
+          />
+
+          <button disabled={loading} className="w-full rounded-xl bg-gradient-to-r from-[#ff4d5e] to-[#ff2f8f] px-4 py-2 font-semibold disabled:opacity-50">
             {loading ? "กำลังเข้าสู่ระบบ..." : "เข้าสู่ระบบ"}
           </button>
-          {msg && <p className="text-sm text-red-300">{msg}</p>}
-          <p className="text-center text-sm text-zinc-300">ยังไม่มีบัญชี? <a className="text-yellow-300 hover:underline" href="/register">สมัครสมาชิก</a></p>
+
+          {msg && <p className="text-sm text-amber-300">{msg}</p>}
+          <p className="text-center text-sm text-zinc-300">ยังไม่มีบัญชี? <a href="/register" className="text-blue-300 hover:underline">สมัครสมาชิก</a></p>
         </form>
       </div>
     </main>

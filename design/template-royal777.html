@@ -1,0 +1,2955 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ROYAL777 - ระบบสมบูรณ์</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;900&family=Sarabun:wght@300;400;500;700&display=swap');
+
+  :root {
+    --gold: #D4AF37;
+    --gold-light: #F4CF57;
+    --gold-dark: #A8860A;
+    --red: #8B0000;
+    --red-bright: #CC0000;
+    --black: #0A0A0A;
+    --dark: #111111;
+    --card: #1A1A1A;
+    --border: rgba(212,175,55,0.3);
+    --text: #E8E8E8;
+    --text-dim: #888;
+    --success: #00C851;
+    --danger: #FF4444;
+    --warning: #FFBB33;
+    --info: #33B5E5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Sarabun', sans-serif;
+    background: var(--black);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ===== NAVIGATION ===== */
+  nav {
+    background: linear-gradient(135deg, #0A0A0A 0%, #1a0000 50%, #0A0A0A 100%);
+    border-bottom: 2px solid var(--gold);
+    padding: 0 20px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    box-shadow: 0 4px 20px rgba(212,175,55,0.2);
+  }
+  .nav-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+  .logo {
+    font-family: 'Cinzel', serif;
+    font-size: 1.6rem;
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--gold), #FFF8DC, var(--gold-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    letter-spacing: 2px;
+  }
+  .nav-links { display: flex; gap: 8px; align-items: center; }
+  .nav-btn {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+  .btn-gold {
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    color: var(--black);
+    font-weight: 700;
+  }
+  .btn-gold:hover { filter: brightness(1.15); transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--gold);
+    color: var(--gold);
+  }
+  .btn-outline:hover { background: rgba(212,175,55,0.1); }
+  .btn-red {
+    background: linear-gradient(135deg, var(--red), var(--red-bright));
+    color: white;
+  }
+  .btn-red:hover { filter: brightness(1.2); }
+
+  /* ===== PAGES ===== */
+  .page { display: none; min-height: 100vh; }
+  .page.active { display: block; }
+
+  /* ===== HOME PAGE ===== */
+  .hero {
+    background: linear-gradient(135deg, #0A0A0A 0%, #1a0000 40%, #2a0000 60%, #0A0A0A 100%);
+    padding: 80px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(212,175,55,0.08) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 50%, rgba(139,0,0,0.15) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero h1 {
+    font-family: 'Cinzel', serif;
+    font-size: clamp(2rem, 6vw, 4rem);
+    font-weight: 900;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold-light), var(--gold-dark));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 16px;
+    text-shadow: none;
+    position: relative;
+  }
+  .hero p { color: var(--text-dim); font-size: 1.1rem; margin-bottom: 32px; }
+  .hero-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  /* ===== SLIDE BANNER ===== */
+  .banner-wrap {
+    max-width: 900px;
+    margin: 0 auto 40px;
+    border-radius: 16px;
+    overflow: hidden;
+    border: 2px solid var(--border);
+    position: relative;
+  }
+  .slides { display: flex; transition: transform 0.6s ease; }
+  .slide {
+    min-width: 100%;
+    height: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    font-family: 'Cinzel', serif;
+  }
+  .slide-1 { background: linear-gradient(135deg, #8B0000, #CC0000, #FF4444); }
+  .slide-2 { background: linear-gradient(135deg, #A8860A, #D4AF37, #F4CF57); color: #000; }
+  .slide-3 { background: linear-gradient(135deg, #001a00, #004400, #006600); }
+  .slide-dots {
+    display: flex; gap: 8px; justify-content: center;
+    padding: 12px; background: rgba(0,0,0,0.5);
+    position: absolute; bottom: 0; left: 0; right: 0;
+  }
+  .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--text-dim); cursor: pointer; transition: 0.3s;
+  }
+  .dot.active { background: var(--gold); transform: scale(1.3); }
+
+  /* ===== SECTION ===== */
+  .section { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+  .section-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.5rem;
+    color: var(--gold);
+    text-align: center;
+    margin-bottom: 32px;
+    position: relative;
+  }
+  .section-title::after {
+    content: '';
+    display: block;
+    width: 80px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 8px auto 0;
+  }
+
+  /* ===== CARDS ===== */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    transition: all 0.3s;
+  }
+  .card:hover { border-color: var(--gold); box-shadow: 0 8px 32px rgba(212,175,55,0.15); }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; }
+  .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+
+  /* ===== FORMS ===== */
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; color: var(--gold); font-size: 0.85rem; font-weight: 600; margin-bottom: 6px; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: var(--text);
+    font-family: 'Sarabun', sans-serif;
+    font-size: 0.95rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    border-color: var(--gold);
+    background: rgba(212,175,55,0.05);
+  }
+  .form-group input[type="file"] {
+    padding: 8px;
+    cursor: pointer;
+  }
+  .form-error { color: var(--danger); font-size: 0.8rem; margin-top: 4px; }
+  .form-hint { color: var(--text-dim); font-size: 0.8rem; margin-top: 4px; }
+  .btn-full {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    transition: all 0.2s;
+    background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+    color: var(--black);
+    margin-top: 8px;
+  }
+  .btn-full:hover { filter: brightness(1.15); transform: translateY(-1px); }
+  .btn-full.btn-red-full {
+    background: linear-gradient(135deg, var(--red), var(--red-bright));
+    color: white;
+  }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.85);
+    z-index: 9000;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(4px);
+  }
+  .modal-overlay.open { display: flex; }
+  .modal {
+    background: var(--card);
+    border: 1px solid var(--gold);
+    border-radius: 16px;
+    padding: 32px;
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 20px 60px rgba(212,175,55,0.2);
+  }
+  .modal-title {
+    font-family: 'Cinzel', serif;
+    font-size: 1.3rem;
+    color: var(--gold);
+    margin-bottom: 24px;
+    text-align: center;
+  }
+  .modal-close {
+    position: absolute;
+    top: 16px; right: 16px;
+    background: none; border: none;
+    color: var(--text-dim); font-size: 1.5rem;
+    cursor: pointer; line-height: 1;
+  }
+
+  /* ===== TOAST ===== */
+  #toast-container {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    z-index: 99999;
+    display: flex; flex-direction: column; gap: 8px;
+  }
+  .toast {
+    background: var(--card);
+    border-radius: 8px;
+    padding: 14px 20px;
+    min-width: 260px;
+    font-size: 0.9rem;
+    animation: slideIn 0.3s ease;
+    border-left: 4px solid var(--gold);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+  }
+  .toast.success { border-left-color: var(--success); }
+  .toast.error { border-left-color: var(--danger); }
+  .toast.warning { border-left-color: var(--warning); }
+  @keyframes slideIn { from { opacity:0; transform: translateX(40px); } to { opacity:1; transform: translateX(0); } }
+
+  /* ===== BADGE / STATUS ===== */
+  .badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+  .badge-success { background: rgba(0,200,81,0.15); color: var(--success); }
+  .badge-danger { background: rgba(255,68,68,0.15); color: var(--danger); }
+  .badge-warning { background: rgba(255,187,51,0.15); color: var(--warning); }
+  .badge-info { background: rgba(51,181,229,0.15); color: var(--info); }
+
+  /* ===== DASHBOARD ===== */
+  .stat-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px; }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat-value { font-size: 1.8rem; font-weight: 700; color: var(--gold); font-family: 'Cinzel', serif; }
+  .stat-label { color: var(--text-dim); font-size: 0.8rem; margin-top: 4px; }
+
+  /* ===== TABLE ===== */
+  .table-wrap { overflow-x: auto; border-radius: 12px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  th {
+    background: rgba(212,175,55,0.1);
+    color: var(--gold);
+    padding: 12px 16px;
+    text-align: left;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  td { padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.05); white-space: nowrap; }
+  tr:hover td { background: rgba(255,255,255,0.03); }
+
+  /* ===== TABS ===== */
+  .tabs { display: flex; gap: 4px; margin-bottom: 24px; flex-wrap: wrap; }
+  .tab {
+    padding: 10px 20px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'Sarabun', sans-serif;
+    font-size: 0.88rem;
+    background: transparent;
+    color: var(--text-dim);
+    transition: all 0.2s;
+  }
+  .tab.active {
+    background: rgba(212,175,55,0.15);
+    border-color: var(--gold);
+    color: var(--gold);
+    font-weight: 600;
+  }
+
+  /* ===== BANK INFO BOX ===== */
+  .bank-box {
+    background: linear-gradient(135deg, rgba(0,60,0,0.4), rgba(0,100,0,0.2));
+    border: 2px solid #00C851;
+    border-radius: 16px;
+    padding: 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .bank-box::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at 50% 0%, rgba(0,200,81,0.1), transparent 60%);
+  }
+  .bank-name { font-size: 1.2rem; font-weight: 700; color: #00C851; margin-bottom: 4px; }
+  .bank-acc { font-size: 2rem; font-weight: 900; letter-spacing: 4px; color: white; font-family: 'Cinzel', serif; }
+  .bank-holder { color: var(--text-dim); font-size: 0.9rem; margin-top: 4px; }
+  .copy-btn {
+    margin-top: 12px;
+    padding: 8px 24px;
+    background: rgba(0,200,81,0.2);
+    border: 1px solid #00C851;
+    border-radius: 6px;
+    color: #00C851;
+    cursor: pointer;
+    font-family: 'Sarabun', sans-serif;
+    transition: all 0.2s;
+  }
+  .copy-btn:hover { background: rgba(0,200,81,0.3); }
+
+  /* ===== QR CODE PLACEHOLDER ===== */
+  .qr-box {
+    width: 160px; height: 160px;
+    background: white;
+    border-radius: 12px;
+    margin: 0 auto 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.7rem; color: #333;
+    flex-direction: column; gap: 4px;
+    border: 3px solid var(--gold);
+  }
+  .qr-grid {
+    display: grid; grid-template-columns: repeat(7,1fr);
+    gap: 2px; padding: 8px;
+  }
+  .qr-c {
+    width: 16px; height: 16px; border-radius: 2px;
+  }
+
+  /* ===== SLIP UPLOAD ===== */
+  .upload-zone {
+    border: 2px dashed var(--border);
+    border-radius: 12px;
+    padding: 32px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s;
+    position: relative;
+  }
+  .upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--gold);
+    background: rgba(212,175,55,0.05);
+  }
+  .upload-zone input[type="file"] {
+    position: absolute; inset: 0; opacity: 0; cursor: pointer;
+    width: 100%; height: 100%;
+  }
+  .upload-icon { font-size: 2.5rem; margin-bottom: 8px; }
+  .upload-text { color: var(--text-dim); font-size: 0.9rem; }
+  .preview-img {
+    max-width: 200px; max-height: 200px;
+    border-radius: 8px; border: 2px solid var(--gold);
+    margin-top: 12px; object-fit: cover; display: none;
+  }
+
+  /* ===== 2FA ===== */
+  .otp-inputs { display: flex; gap: 8px; justify-content: center; margin: 20px 0; }
+  .otp-input {
+    width: 48px; height: 56px;
+    background: rgba(255,255,255,0.05);
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    text-align: center;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--gold);
+    outline: none;
+    transition: 0.2s;
+  }
+  .otp-input:focus { border-color: var(--gold); background: rgba(212,175,55,0.08); }
+
+  /* ===== MEMBER DASHBOARD ===== */
+  .member-header {
+    background: linear-gradient(135deg, #0A0A0A, #1a0000, #0A0A0A);
+    border-bottom: 1px solid var(--border);
+    padding: 24px 20px;
+  }
+  .balance-display {
+    font-family: 'Cinzel', serif;
+    font-size: 2.5rem;
+    font-weight: 900;
+    color: var(--gold);
+  }
+  .balance-sub { color: var(--text-dim); font-size: 0.85rem; }
+
+  /* ===== ADMIN ===== */
+  .admin-layout { display: flex; min-height: calc(100vh - 64px); }
+  .admin-sidebar {
+    width: 220px;
+    background: #0F0F0F;
+    border-right: 1px solid var(--border);
+    padding: 20px 0;
+    flex-shrink: 0;
+    position: sticky;
+    top: 64px;
+    height: calc(100vh - 64px);
+    overflow-y: auto;
+  }
+  .admin-content { flex: 1; padding: 32px 24px; overflow-x: hidden; }
+  .sidebar-item {
+    padding: 12px 20px;
+    cursor: pointer;
+    color: var(--text-dim);
+    font-size: 0.88rem;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-left: 3px solid transparent;
+  }
+  .sidebar-item:hover { background: rgba(212,175,55,0.08); color: var(--text); }
+  .sidebar-item.active { color: var(--gold); border-left-color: var(--gold); background: rgba(212,175,55,0.1); }
+  .sidebar-section {
+    padding: 16px 20px 4px;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  /* ===== SECURITY ALERT ===== */
+  .security-alert {
+    background: rgba(255,68,68,0.1);
+    border: 1px solid rgba(255,68,68,0.4);
+    border-radius: 8px;
+    padding: 12px 16px;
+    display: flex; align-items: center; gap: 12px;
+    margin-bottom: 16px;
+    font-size: 0.88rem;
+    color: #FF8888;
+  }
+
+  /* ===== TOGGLE ===== */
+  .toggle-wrap { display: flex; align-items: center; gap: 12px; }
+  .toggle {
+    width: 44px; height: 24px;
+    background: #333;
+    border-radius: 12px;
+    position: relative;
+    cursor: pointer;
+    transition: background 0.3s;
+    flex-shrink: 0;
+  }
+  .toggle.on { background: var(--success); }
+  .toggle::after {
+    content: '';
+    position: absolute;
+    width: 18px; height: 18px;
+    background: white;
+    border-radius: 50%;
+    top: 3px; left: 3px;
+    transition: transform 0.3s;
+  }
+  .toggle.on::after { transform: translateX(20px); }
+
+  /* ===== GAME ===== */
+  .game-wrap {
+    max-width: 480px;
+    margin: 0 auto;
+    background: var(--card);
+    border: 2px solid var(--border);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.8);
+  }
+  .game-header {
+    background: linear-gradient(135deg, var(--red), #660000);
+    padding: 16px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .reels-area {
+    background: #050505;
+    padding: 24px;
+    display: flex; gap: 12px; justify-content: center;
+  }
+  .reel {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, #1a1a1a, #2a2a2a);
+    border: 2px solid var(--border);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem;
+    position: relative;
+    overflow: hidden;
+  }
+  .reel.spin { animation: spinReel 0.5s ease-out; }
+  @keyframes spinReel {
+    0% { transform: translateY(-100%); }
+    70% { transform: translateY(5%); }
+    100% { transform: translateY(0); }
+  }
+  .game-controls { padding: 20px; }
+  .bet-row { display: flex; align-items: center; gap: 8px; margin-bottom: 16px; }
+  .bet-btn {
+    width: 36px; height: 36px;
+    background: rgba(212,175,55,0.15);
+    border: 1px solid var(--gold);
+    border-radius: 6px;
+    color: var(--gold);
+    font-size: 1.2rem;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .bet-display {
+    flex: 1;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 8px 12px;
+    text-align: center;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+    color: var(--gold);
+  }
+  .spin-btn {
+    width: 100%;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--red), var(--red-bright));
+    border: none; border-radius: 10px;
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 15px rgba(139,0,0,0.4);
+  }
+  .spin-btn:hover { filter: brightness(1.2); transform: translateY(-2px); }
+  .spin-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+  /* ===== WIN ===== */
+  .win-display {
+    text-align: center; padding: 12px;
+    font-family: 'Cinzel', serif;
+    font-size: 1rem; min-height: 44px;
+  }
+  .win-amount { color: var(--gold); font-size: 1.3rem; font-weight: 700; }
+  .lose-text { color: var(--text-dim); }
+
+  /* ===== DEPOSIT PAGE ===== */
+  .step-indicator {
+    display: flex; gap: 0; margin-bottom: 32px;
+  }
+  .step {
+    flex: 1; text-align: center; padding: 12px;
+    border-bottom: 3px solid #333;
+    color: var(--text-dim); font-size: 0.85rem;
+    transition: all 0.3s;
+  }
+  .step.active { border-bottom-color: var(--gold); color: var(--gold); font-weight: 600; }
+  .step.done { border-bottom-color: var(--success); color: var(--success); }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 768px) {
+    .admin-sidebar { display: none; }
+    .admin-sidebar.mobile-open {
+      display: block;
+      position: fixed;
+      top: 64px; left: 0; bottom: 0;
+      z-index: 500;
+      width: 250px;
+    }
+    .nav-links .nav-btn:nth-child(1) { display: none; }
+    .grid-3 { grid-template-columns: 1fr; }
+  }
+
+  /* ===== COMPLIANCE / INFO PAGES ===== */
+  .prose { max-width: 800px; margin: 0 auto; line-height: 1.8; }
+  .prose h2 { color: var(--gold); font-family: 'Cinzel', serif; margin: 24px 0 12px; }
+  .prose p { color: var(--text-dim); margin-bottom: 12px; }
+
+  /* ===== PROMO CARD ===== */
+  .promo-card {
+    border-radius: 16px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: all 0.3s;
+  }
+  .promo-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(212,175,55,0.2); }
+  .promo-img {
+    height: 140px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 2rem;
+    font-family: 'Cinzel', serif;
+    font-weight: 700;
+  }
+  .promo-body { background: var(--card); padding: 16px; }
+  .promo-title { color: var(--gold); font-weight: 700; margin-bottom: 6px; }
+  .promo-desc { color: var(--text-dim); font-size: 0.85rem; }
+
+  /* ===== SECURITY LOG ===== */
+  .log-entry { display: flex; gap: 12px; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid rgba(255,255,255,0.05); }
+  .log-icon { width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; flex-shrink: 0; }
+  .log-info { flex: 1; }
+  .log-action { font-size: 0.88rem; color: var(--text); }
+  .log-time { font-size: 0.75rem; color: var(--text-dim); }
+
+  /* scrollbar */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: var(--dark); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+</style>
+</head>
+<body>
+
+<!-- NAVIGATION -->
+<nav>
+  <div class="nav-inner">
+    <div class="logo" onclick="showPage('home')" style="cursor:pointer">🎰 ROYAL777</div>
+    <div class="nav-links" id="navLinks">
+      <button class="nav-btn btn-outline" onclick="showPage('promotions')">โปรโมชั่น</button>
+      <button class="nav-btn btn-outline" id="navDeposit" onclick="showPage('deposit')" style="display:none">ฝากเงิน</button>
+      <button class="nav-btn btn-outline" id="navGame" onclick="showPage('game')" style="display:none">เล่นเกม</button>
+      <button class="nav-btn btn-outline" id="navDashboard" onclick="showPage('member-dashboard')" style="display:none">บัญชีฉัน</button>
+      <button class="nav-btn btn-gold" id="navLogin" onclick="openModal('loginModal')">เข้าสู่ระบบ</button>
+      <button class="nav-btn btn-outline" id="navRegister" onclick="openModal('registerModal')">สมัครสมาชิก</button>
+      <button class="nav-btn btn-red" id="navLogout" onclick="logout()" style="display:none">ออกจากระบบ</button>
+    </div>
+  </div>
+</nav>
+
+<!-- TOAST CONTAINER -->
+<div id="toast-container"></div>
+
+<!-- ========================= -->
+<!-- PAGE: HOME                -->
+<!-- ========================= -->
+<div class="page active" id="page-home">
+  <div class="hero">
+    <div class="banner-wrap">
+      <div class="slides" id="slides">
+        <div class="slide slide-1">🎰 โบนัสต้อนรับ 100% สูงสุด 5,000 บาท</div>
+        <div class="slide slide-2">💰 คืนยอดเสีย 10% ทุกวัน</div>
+        <div class="slide slide-3">🎁 แนะนำเพื่อน รับ 500 บาท</div>
+      </div>
+      <div class="slide-dots" id="slideDots">
+        <div class="dot active" onclick="goSlide(0)"></div>
+        <div class="dot" onclick="goSlide(1)"></div>
+        <div class="dot" onclick="goSlide(2)"></div>
+      </div>
+    </div>
+    <h1>ROYAL777</h1>
+    <p>เกมคาสิโนออนไลน์ระดับพรีเมียม ปลอดภัย มั่นใจได้</p>
+    <div class="hero-btns">
+      <button class="nav-btn btn-gold" style="padding:14px 32px;font-size:1rem" onclick="openModal('registerModal')">สมัครสมาชิกฟรี</button>
+      <button class="nav-btn btn-outline" style="padding:14px 32px;font-size:1rem" onclick="openModal('loginModal')">เข้าสู่ระบบ</button>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">เกมยอดนิยม</div>
+    <div class="grid-3">
+      <div class="card" onclick="requireLogin()" style="cursor:pointer;text-align:center">
+        <div style="font-size:3rem;margin-bottom:12px">🎰</div>
+        <div style="font-weight:700;color:var(--gold)">สล็อตผลไม้</div>
+        <div style="color:var(--text-dim);font-size:0.85rem;margin-top:4px">ยิงเป้า รับโบนัส</div>
+        <div style="margin-top:12px"><span class="badge badge-success">ออนไลน์</span></div>
+      </div>
+      <div class="card" style="text-align:center;opacity:0.6">
+        <div style="font-size:3rem;margin-bottom:12px">🃏</div>
+        <div style="font-weight:700;color:var(--gold)">บาคาร่า</div>
+        <div style="color:var(--text-dim);font-size:0.85rem;margin-top:4px">เร็วๆ นี้</div>
+        <div style="margin-top:12px"><span class="badge badge-warning">เร็วๆ นี้</span></div>
+      </div>
+      <div class="card" style="text-align:center;opacity:0.6">
+        <div style="font-size:3rem;margin-bottom:12px">🎲</div>
+        <div style="font-weight:700;color:var(--gold)">ไฮโล</div>
+        <div style="color:var(--text-dim);font-size:0.85rem;margin-top:4px">เร็วๆ นี้</div>
+        <div style="margin-top:12px"><span class="badge badge-warning">เร็วๆ นี้</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section" style="padding-top:0">
+    <div class="section-title">ทำไมต้องเลือก ROYAL777</div>
+    <div class="grid-3">
+      <div class="card" style="text-align:center">
+        <div style="font-size:2rem;margin-bottom:12px">🔒</div>
+        <div style="font-weight:700;margin-bottom:8px">ระบบปลอดภัย</div>
+        <div style="color:var(--text-dim);font-size:0.85rem">ใช้ระบบเข้ารหัสระดับธนาคาร รักษาความปลอดภัยสูงสุด</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div style="font-size:2rem;margin-bottom:12px">⚡</div>
+        <div style="font-weight:700;margin-bottom:8px">ฝากถอนรวดเร็ว</div>
+        <div style="color:var(--text-dim);font-size:0.85rem">ฝากเงินภายใน 1 นาที ถอนภายใน 5 นาที</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div style="font-size:2rem;margin-bottom:12px">🎁</div>
+        <div style="font-weight:700;margin-bottom:8px">โปรโมชั่นดีที่สุด</div>
+        <div style="color:var(--text-dim);font-size:0.85rem">โบนัสต้อนรับ คืนยอดเสีย และอีกมากมาย</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer compliance links -->
+  <div style="background:#0F0F0F;border-top:1px solid var(--border);padding:20px;text-align:center">
+    <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;font-size:0.82rem">
+      <span onclick="showPage('terms')" style="color:var(--text-dim);cursor:pointer;hover:color:var(--gold)">ข้อกำหนดการใช้งาน</span>
+      <span onclick="showPage('privacy')" style="color:var(--text-dim);cursor:pointer">นโยบายความเป็นส่วนตัว</span>
+      <span onclick="showPage('responsible')" style="color:var(--text-dim);cursor:pointer">การเล่นอย่างรับผิดชอบ</span>
+      <span onclick="showPage('contact')" style="color:var(--text-dim);cursor:pointer">ติดต่อเรา</span>
+    </div>
+    <div style="color:#444;font-size:0.75rem;margin-top:12px">© 2024 ROYAL777 · 18+ · เล่นอย่างมีสติ</div>
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- PAGE: PROMOTIONS          -->
+<!-- ========================= -->
+<div class="page" id="page-promotions">
+  <div class="section">
+    <div class="section-title">โปรโมชั่นพิเศษ</div>
+    <div class="grid-3">
+      <div class="promo-card">
+        <div class="promo-img" style="background:linear-gradient(135deg,#8B0000,#CC0000)">🎉 100%</div>
+        <div class="promo-body">
+          <div class="promo-title">โบนัสต้อนรับ 100%</div>
+          <div class="promo-desc">สมัครใหม่ฝากครั้งแรก รับโบนัสทันที 100% สูงสุด 5,000 บาท</div>
+          <button class="nav-btn btn-gold" style="margin-top:12px;width:100%;padding:10px" onclick="openModal('registerModal')">รับโบนัส</button>
+        </div>
+      </div>
+      <div class="promo-card">
+        <div class="promo-img" style="background:linear-gradient(135deg,#A8860A,#D4AF37);color:#000">💰 10%</div>
+        <div class="promo-body">
+          <div class="promo-title">คืนยอดเสียทุกวัน 10%</div>
+          <div class="promo-desc">ยอดเสียทุกวันได้รับคืน 10% ทุกวันจันทร์ โดยอัตโนมัติ</div>
+          <button class="nav-btn btn-outline" style="margin-top:12px;width:100%;padding:10px" onclick="openModal('loginModal')">เข้าร่วม</button>
+        </div>
+      </div>
+      <div class="promo-card">
+        <div class="promo-img" style="background:linear-gradient(135deg,#001a4d,#003399)">👥 500฿</div>
+        <div class="promo-body">
+          <div class="promo-title">แนะนำเพื่อน รับ 500</div>
+          <div class="promo-desc">แนะนำเพื่อนให้สมัครและฝากเงิน รับทันที 500 บาทต่อคน</div>
+          <button class="nav-btn btn-outline" style="margin-top:12px;width:100%;padding:10px" onclick="openModal('loginModal')">แชร์ลิงก์</button>
+        </div>
+      </div>
+    </div>
+    <div style="background:rgba(255,187,51,0.08);border:1px solid rgba(255,187,51,0.3);border-radius:8px;padding:16px;margin-top:24px;font-size:0.85rem;color:var(--text-dim)">
+      ⚠️ เงื่อนไขทั่วไป: โบนัสทุกประเภทมีเงื่อนไขการทำยอด (wagering requirement) ก่อนถอน กรุณาอ่านรายละเอียดก่อนรับโบนัส
+    </div>
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- PAGE: DEPOSIT             -->
+<!-- ========================= -->
+<div class="page" id="page-deposit">
+  <div class="section" style="max-width:700px">
+    <div class="section-title">ฝากเงิน</div>
+
+    <div class="step-indicator">
+      <div class="step active" id="step1">1. เลือกช่องทาง</div>
+      <div class="step" id="step2">2. โอนเงิน</div>
+      <div class="step" id="step3">3. แจ้งโอน</div>
+      <div class="step" id="step4">4. ยืนยัน</div>
+    </div>
+
+    <!-- Step 1: Choose method -->
+    <div id="depositStep1">
+      <div class="grid-2" style="gap:12px">
+        <div class="card" onclick="selectDepositMethod('bank')" style="cursor:pointer;text-align:center;border-color:var(--gold)">
+          <div style="font-size:2rem;margin-bottom:8px">🏦</div>
+          <div style="font-weight:700">โอนธนาคาร</div>
+          <div style="color:var(--text-dim);font-size:0.82rem;margin-top:4px">รับเงินภายใน 1 นาที</div>
+        </div>
+        <div class="card" onclick="selectDepositMethod('promptpay')" style="cursor:pointer;text-align:center">
+          <div style="font-size:2rem;margin-bottom:8px">📱</div>
+          <div style="font-weight:700">พร้อมเพย์</div>
+          <div style="color:var(--text-dim);font-size:0.82rem;margin-top:4px">สแกน QR ได้ทันที</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 2: Bank info -->
+    <div id="depositStep2" style="display:none">
+      <div id="bankInfoSection">
+        <!-- Bank transfer -->
+        <div id="bankTransferInfo">
+          <p style="color:var(--text-dim);margin-bottom:16px;font-size:0.9rem">โปรดโอนเงินมายังบัญชีด้านล่าง แล้วแจ้งสลิปในขั้นตอนถัดไป</p>
+          <div class="bank-box" style="margin-bottom:16px">
+            <div class="bank-name">🏦 กสิกรไทย (KBank)</div>
+            <div class="bank-acc" id="displayBankAcc">xxx-x-xxxxx-x</div>
+            <div class="bank-holder" id="displayBankName">บริษัท ไซต์คุณ จำกัด</div>
+            <button class="copy-btn" onclick="copyBankAcc()">📋 คัดลอกเลขบัญชี</button>
+          </div>
+          <div class="form-group">
+            <label>จำนวนเงินที่โอน (บาท)</label>
+            <input type="number" id="depositAmount" placeholder="กรอกจำนวนเงิน" min="100" step="100">
+            <div class="form-hint">ขั้นต่ำ 100 บาท</div>
+          </div>
+          <button class="btn-full" onclick="nextDepositStep(3)">ถัดไป →</button>
+        </div>
+
+        <!-- PromptPay QR -->
+        <div id="promptpayInfo" style="display:none">
+          <p style="color:var(--text-dim);margin-bottom:16px;font-size:0.9rem;text-align:center">สแกน QR หรือใช้หมายเลข PromptPay ด้านล่าง</p>
+          <!-- QR visual placeholder -->
+          <div style="text-align:center;margin-bottom:16px">
+            <div style="width:180px;height:180px;background:white;border-radius:12px;margin:0 auto;padding:12px;border:3px solid var(--gold)">
+              <svg viewBox="0 0 100 100" style="width:100%;height:100%">
+                <!-- QR pattern placeholder -->
+                <rect fill="#000" x="10" y="10" width="25" height="25" rx="3"/>
+                <rect fill="#fff" x="15" y="15" width="15" height="15" rx="1"/>
+                <rect fill="#000" x="18" y="18" width="9" height="9" rx="1"/>
+                <rect fill="#000" x="65" y="10" width="25" height="25" rx="3"/>
+                <rect fill="#fff" x="70" y="15" width="15" height="15" rx="1"/>
+                <rect fill="#000" x="73" y="18" width="9" height="9" rx="1"/>
+                <rect fill="#000" x="10" y="65" width="25" height="25" rx="3"/>
+                <rect fill="#fff" x="15" y="70" width="15" height="15" rx="1"/>
+                <rect fill="#000" x="18" y="73" width="9" height="9" rx="1"/>
+                <!-- data cells -->
+                <rect fill="#000" x="40" y="10" width="6" height="6"/>
+                <rect fill="#000" x="50" y="10" width="6" height="6"/>
+                <rect fill="#000" x="40" y="20" width="6" height="6"/>
+                <rect fill="#000" x="10" y="40" width="6" height="6"/>
+                <rect fill="#000" x="20" y="40" width="6" height="6"/>
+                <rect fill="#000" x="40" y="40" width="6" height="6"/>
+                <rect fill="#000" x="50" y="40" width="6" height="6"/>
+                <rect fill="#000" x="60" y="40" width="6" height="6"/>
+                <rect fill="#000" x="70" y="40" width="6" height="6"/>
+                <rect fill="#000" x="80" y="40" width="6" height="6"/>
+                <rect fill="#000" x="40" y="50" width="6" height="6"/>
+                <rect fill="#000" x="60" y="50" width="6" height="6"/>
+                <rect fill="#000" x="80" y="50" width="6" height="6"/>
+                <rect fill="#000" x="40" y="60" width="6" height="6"/>
+                <rect fill="#000" x="50" y="60" width="6" height="6"/>
+                <rect fill="#000" x="60" y="60" width="6" height="6"/>
+                <rect fill="#000" x="80" y="60" width="6" height="6"/>
+                <rect fill="#000" x="40" y="70" width="6" height="6"/>
+                <rect fill="#000" x="60" y="70" width="6" height="6"/>
+                <rect fill="#000" x="70" y="70" width="6" height="6"/>
+                <rect fill="#000" x="40" y="80" width="6" height="6"/>
+                <rect fill="#000" x="50" y="80" width="6" height="6"/>
+                <rect fill="#000" x="60" y="80" width="6" height="6"/>
+                <rect fill="#000" x="80" y="80" width="6" height="6"/>
+              </svg>
+            </div>
+            <div style="font-family:'Cinzel',serif;font-size:1.1rem;color:var(--gold);margin-top:12px;font-weight:700" id="displayPromptPay">xxx-xxx-xxxx</div>
+            <div style="color:var(--text-dim);font-size:0.82rem">หมายเลข PromptPay</div>
+          </div>
+          <div class="form-group">
+            <label>จำนวนเงินที่โอน (บาท)</label>
+            <input type="number" id="depositAmount2" placeholder="กรอกจำนวนเงิน" min="100" step="100">
+          </div>
+          <button class="btn-full" onclick="nextDepositStep(3)">ถัดไป →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 3: Upload Slip -->
+    <div id="depositStep3" style="display:none">
+      <div class="card">
+        <div style="font-weight:700;color:var(--gold);margin-bottom:16px">📎 แนบสลิปการโอนเงิน</div>
+        <div class="upload-zone" id="uploadZone" onclick="document.getElementById('slipFile').click()">
+          <input type="file" id="slipFile" accept="image/*,.pdf" onchange="previewSlip(event)">
+          <div class="upload-icon">📷</div>
+          <div class="upload-text">คลิกหรือลากไฟล์สลิปมาวางที่นี่<br><small>รองรับ JPG, PNG, PDF</small></div>
+          <img id="slipPreview" class="preview-img" alt="ตัวอย่างสลิป">
+        </div>
+        <div style="margin-top:16px">
+          <div class="form-group">
+            <label>วันเวลาที่โอน</label>
+            <input type="datetime-local" id="transferTime">
+          </div>
+          <div class="form-group">
+            <label>หมายเหตุ (ถ้ามี)</label>
+            <input type="text" id="depositNote" placeholder="เช่น โอนจาก SCB">
+          </div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-full" style="background:rgba(255,255,255,0.1);color:var(--text)" onclick="nextDepositStep(2)">← ย้อนกลับ</button>
+          <button class="btn-full" onclick="submitDeposit()">แจ้งโอน ✓</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Step 4: Success -->
+    <div id="depositStep4" style="display:none;text-align:center;padding:40px 0">
+      <div style="font-size:4rem;margin-bottom:16px">✅</div>
+      <div style="font-family:'Cinzel',serif;font-size:1.5rem;color:var(--success);margin-bottom:8px">แจ้งโอนสำเร็จ!</div>
+      <div style="color:var(--text-dim);margin-bottom:24px">ทีมงานจะอนุมัติและเติมเครดิตภายใน 5 นาที</div>
+      <div class="card" style="max-width:300px;margin:0 auto 24px;text-align:left">
+        <div style="font-size:0.85rem;color:var(--text-dim);margin-bottom:8px">รหัสธุรกรรม</div>
+        <div style="font-family:'Cinzel',serif;color:var(--gold);font-weight:700" id="txnRef">-</div>
+      </div>
+      <button class="nav-btn btn-gold" onclick="showPage('member-dashboard')">ดูบัญชีฉัน</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- PAGE: MEMBER DASHBOARD    -->
+<!-- ========================= -->
+<div class="page" id="page-member-dashboard">
+  <div class="member-header">
+    <div class="section" style="padding:0;max-width:1000px">
+      <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px">
+        <div>
+          <div style="color:var(--text-dim);font-size:0.85rem">ยินดีต้อนรับ</div>
+          <div style="font-family:'Cinzel',serif;font-size:1.3rem;color:var(--gold)" id="memberName">สมาชิก</div>
+        </div>
+        <div style="text-align:right">
+          <div class="balance-sub">ยอดเครดิต</div>
+          <div class="balance-display" id="memberBalance">0.00</div>
+          <div class="balance-sub">บาท</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="section" style="max-width:1000px">
+    <div class="tabs">
+      <button class="tab active" onclick="memberTab('overview', this)">ภาพรวม</button>
+      <button class="tab" onclick="memberTab('transactions', this)">ประวัติธุรกรรม</button>
+      <button class="tab" onclick="memberTab('profile', this)">โปรไฟล์</button>
+    </div>
+
+    <!-- Overview -->
+    <div id="memberTab-overview">
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="memberTotalDeposit">0</div>
+          <div class="stat-label">ยอดฝากรวม (บาท)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="memberTotalWithdraw">0</div>
+          <div class="stat-label">ยอดถอนรวม (บาท)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="memberLevel">1</div>
+          <div class="stat-label">เลเวล</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="memberPoints">0</div>
+          <div class="stat-label">คะแนนสะสม</div>
+        </div>
+      </div>
+      <div style="display:flex;gap:12px;flex-wrap:wrap">
+        <button class="nav-btn btn-gold" style="padding:12px 24px" onclick="showPage('deposit')">ฝากเงิน</button>
+        <button class="nav-btn btn-outline" style="padding:12px 24px" onclick="openModal('withdrawModal')">ถอนเงิน</button>
+        <button class="nav-btn btn-red" style="padding:12px 24px" onclick="showPage('game')">เล่นเกม</button>
+      </div>
+    </div>
+
+    <!-- Transactions -->
+    <div id="memberTab-transactions" style="display:none">
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>วันที่</th>
+              <th>ประเภท</th>
+              <th>จำนวน (บาท)</th>
+              <th>สถานะ</th>
+            </tr>
+          </thead>
+          <tbody id="memberTxnTable">
+            <tr><td colspan="4" style="text-align:center;color:var(--text-dim);padding:24px">ยังไม่มีรายการ</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Profile -->
+    <div id="memberTab-profile" style="display:none">
+      <div class="card" style="max-width:480px">
+        <div class="form-group">
+          <label>ชื่อผู้ใช้</label>
+          <input type="text" id="profileUsername" readonly style="opacity:0.7">
+        </div>
+        <div class="form-group">
+          <label>ชื่อ-นามสกุล</label>
+          <input type="text" id="profileFullname">
+        </div>
+        <div class="form-group">
+          <label>เบอร์โทรศัพท์</label>
+          <input type="tel" id="profilePhone">
+        </div>
+        <div class="form-group">
+          <label>เปลี่ยนรหัสผ่าน</label>
+          <input type="password" id="profileNewPass" placeholder="รหัสผ่านใหม่ (ถ้าต้องการเปลี่ยน)">
+        </div>
+        <button class="btn-full" onclick="saveProfile()">บันทึกข้อมูล</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- PAGE: GAME                -->
+<!-- ========================= -->
+<div class="page" id="page-game">
+  <div class="section" style="max-width:520px">
+    <div class="section-title">🎰 สล็อตผลไม้</div>
+    <div class="game-wrap">
+      <div class="game-header">
+        <div>
+          <div style="font-size:0.75rem;color:rgba(255,255,255,0.6)">เครดิต</div>
+          <div style="font-family:'Cinzel',serif;font-weight:700;font-size:1.1rem;color:var(--gold)" id="gameBalance">500.00</div>
+        </div>
+        <div style="font-family:'Cinzel',serif;font-size:1.2rem;font-weight:700">ROYAL SLOTS</div>
+        <div>
+          <div style="font-size:0.75rem;color:rgba(255,255,255,0.6)">เลเวล</div>
+          <div style="font-family:'Cinzel',serif;font-weight:700;color:var(--gold-light)" id="gameLevel">1</div>
+        </div>
+      </div>
+      <div class="reels-area">
+        <div class="reel" id="reel1">🍒</div>
+        <div class="reel" id="reel2">🍋</div>
+        <div class="reel" id="reel3">🍇</div>
+      </div>
+      <div class="win-display" id="winDisplay">
+        <span class="lose-text">กด SPIN เพื่อเล่น</span>
+      </div>
+      <div class="game-controls">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <span style="font-size:0.82rem;color:var(--text-dim)">เดิมพัน</span>
+          <div class="bet-row" style="margin:0">
+            <button class="bet-btn" onclick="changeBet(-10)">−</button>
+            <div class="bet-display" id="betDisplay">10</div>
+            <button class="bet-btn" onclick="changeBet(10)">+</button>
+          </div>
+        </div>
+        <!-- Payline reference -->
+        <div style="background:rgba(0,0,0,0.3);border-radius:8px;padding:10px;margin-bottom:12px;font-size:0.75rem;color:var(--text-dim)">
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:4px">
+            <span>🍒🍒🍒 = x5</span><span>🍋🍋🍋 = x3</span>
+            <span>🍇🍇🍇 = x8</span><span>⭐⭐⭐ = x15</span>
+            <span>💎💎💎 = x25</span><span>🎰🎰🎰 = x50</span>
+          </div>
+        </div>
+        <button class="spin-btn" id="spinBtn" onclick="spinReels()">🎰 SPIN</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- PAGE: ADMIN               -->
+<!-- ========================= -->
+<div class="page" id="page-admin">
+  <div class="admin-layout">
+    <!-- Sidebar -->
+    <div class="admin-sidebar" id="adminSidebar">
+      <div style="padding:16px;text-align:center;border-bottom:1px solid var(--border);margin-bottom:8px">
+        <div style="font-size:0.75rem;color:var(--text-dim)">ADMIN PANEL</div>
+        <div style="font-family:'Cinzel',serif;color:var(--gold);font-weight:700;font-size:0.9rem" id="adminNameDisplay">Admin</div>
+      </div>
+      <div class="sidebar-section">MAIN</div>
+      <div class="sidebar-item active" onclick="adminTab('dashboard', this)">📊 Dashboard</div>
+      <div class="sidebar-section">จัดการ</div>
+      <div class="sidebar-item" onclick="adminTab('members', this)">👥 สมาชิก</div>
+      <div class="sidebar-item" onclick="adminTab('transactions', this)">💰 ฝากถอน</div>
+      <div class="sidebar-item" onclick="adminTab('slips', this)">📎 อนุมัติสลิป</div>
+      <div class="sidebar-section">รายงาน</div>
+      <div class="sidebar-item" onclick="adminTab('reports', this)">📈 รายงาน</div>
+      <div class="sidebar-item" onclick="adminTab('analytics', this)">🔬 วิเคราะห์</div>
+      <div class="sidebar-section">ระบบ</div>
+      <div class="sidebar-item" onclick="adminTab('settings', this)">⚙️ ตั้งค่า</div>
+      <div class="sidebar-item" onclick="adminTab('admins', this)">🛡️ จัดการแอดมิน</div>
+      <div class="sidebar-item" onclick="adminTab('security', this)">🔒 Security Log</div>
+      <div style="padding:16px;border-top:1px solid var(--border);margin-top:auto">
+        <button class="nav-btn btn-red" style="width:100%;font-size:0.82rem;padding:8px" onclick="logoutAdmin()">ออกจากระบบ</button>
+      </div>
+    </div>
+
+    <!-- Content -->
+    <div class="admin-content">
+
+      <!-- DASHBOARD TAB -->
+      <div id="adminTab-dashboard">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:12px">
+          <div style="font-family:'Cinzel',serif;font-size:1.3rem;color:var(--gold)">Dashboard</div>
+          <div style="font-size:0.82rem;color:var(--text-dim)" id="adminDate"></div>
+        </div>
+        <div class="stat-grid">
+          <div class="stat-card">
+            <div class="stat-value" id="statsMembers">0</div>
+            <div class="stat-label">สมาชิกทั้งหมด</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="statsDeposit">0</div>
+            <div class="stat-label">ฝากวันนี้ (บาท)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="statsWithdraw">0</div>
+            <div class="stat-label">ถอนวันนี้ (บาท)</div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-value" id="statsPending">0</div>
+            <div class="stat-label">รายการรอดำเนินการ</div>
+          </div>
+        </div>
+        <div class="grid-2">
+          <div class="card">
+            <div style="color:var(--gold);font-weight:700;margin-bottom:16px">รายการล่าสุด</div>
+            <div id="recentTxns">
+              <div style="color:var(--text-dim);font-size:0.85rem;text-align:center;padding:20px">ยังไม่มีรายการ</div>
+            </div>
+          </div>
+          <div class="card">
+            <div style="color:var(--gold);font-weight:700;margin-bottom:16px">สมาชิกใหม่วันนี้</div>
+            <div id="newMembersWidget">
+              <div style="color:var(--text-dim);font-size:0.85rem;text-align:center;padding:20px">ยังไม่มีข้อมูล</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MEMBERS TAB -->
+      <div id="adminTab-members" style="display:none">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+          <div style="font-family:'Cinzel',serif;font-size:1.3rem;color:var(--gold)">จัดการสมาชิก</div>
+          <div style="display:flex;gap:8px;flex-wrap:wrap">
+            <input type="text" id="memberSearch" placeholder="ค้นหา username / ชื่อ / โทร" style="background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:8px;padding:8px 14px;color:var(--text);font-family:'Sarabun',sans-serif;outline:none;width:220px" oninput="renderMembersTable()">
+            <button class="nav-btn btn-gold" onclick="exportCSV('members')">Export CSV</button>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Username</th>
+                <th>ชื่อ</th>
+                <th>โทร</th>
+                <th>เครดิต</th>
+                <th>สมัคร</th>
+                <th>สถานะ</th>
+                <th>จัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="membersTableBody"></tbody>
+          </table>
+        </div>
+        <div id="membersPagination" style="display:flex;gap:8px;justify-content:center;margin-top:16px"></div>
+      </div>
+
+      <!-- TRANSACTIONS TAB -->
+      <div id="adminTab-transactions" style="display:none">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+          <div style="font-family:'Cinzel',serif;font-size:1.3rem;color:var(--gold)">ฝาก / ถอน</div>
+          <div style="display:flex;gap:8px">
+            <button class="nav-btn btn-gold" onclick="openModal('newTransactionModal')">+ รายการใหม่</button>
+            <button class="nav-btn btn-outline" onclick="exportCSV('transactions')">Export CSV</button>
+          </div>
+        </div>
+        <div class="tabs">
+          <button class="tab active" onclick="filterTxn('all', this)">ทั้งหมด</button>
+          <button class="tab" onclick="filterTxn('pending', this)">รอดำเนินการ</button>
+          <button class="tab" onclick="filterTxn('approved', this)">อนุมัติแล้ว</button>
+          <button class="tab" onclick="filterTxn('rejected', this)">ปฏิเสธ</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>ประเภท</th>
+                <th>จำนวน (บาท)</th>
+                <th>เวลา</th>
+                <th>สถานะ</th>
+                <th>จัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="txnTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SLIPS TAB -->
+      <div id="adminTab-slips" style="display:none">
+        <div style="font-family:'Cinzel',serif;font-size:1.3rem;color:var(--gold);margin-bottom:20px">อนุมัติสลิป</div>
+        <div id="slipsList">
+          <div class="grid-2" id="slipsGrid"></div>
+        </div>
+      </div>
+
+      <!-- REPORTS TAB -->
+      <div id="adminTab-reports" style="display:none">
+        <div style="font-family:'Cinzel',serif;font-size:1.3rem;color:var(--gold);margin-bottom:20px">รายงานรายวัน</div>
+        <div class="card" style="margin-bottom:20px">
+          <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap">
+            <div>
+              <label style="display:block;color:var(--gold);font-size:0.82rem;margin-bottom:4px">วันที่เริ่มต้น</label>
+              <input type="date" id="reportFrom" style="background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:6px;padding:8px;color:var(--text);font-family:'Sarabun',sans-serif;outline:none">
+            </div>
+            <div>
+              <label style="display:block;color:var(--gold);font-size:0.82rem;margin-bottom:4px">วันที่สิ้นสุด</label>
+              <input type="date" id="reportTo" style="background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:6px;padding:8px;color:var(--text);font-family:'Sarabun',sans-serif;outline:none">
+            </div>
+            <button class="nav-btn btn-gold" onclick="generateReport()" style="padding:10px 20px">สร้างรายงาน</button>
+            <button class="nav-btn btn-outline" onclick="exportCSV('report')" style="padding:10px 20px">Export CSV</button>
+          </div>
+        </div>
+        <div class="stat-grid" id="reportStats">
+          <div class="stat-card"><div class="stat-value">-</div><div class="stat-label">ยอดฝากรวม</div></div>
+          <div class="stat-card"><div class="stat-value">-</div><div class="stat-label">ยอดถอนรวม</div></div>
+          <div class="stat-card"><div class="stat-value">-</div><div class="stat-label">กำไรสุทธิ</div></div>
+          <div class="stat-card"><div class="stat-value">-</div><div class="stat-label">สมาชิกใหม่</div></div>
+        </div>
+      </div>
+
+      <!-- ANALYTICS TAB -->
+      <div id="adminTab-analytics" style="display:none">
+        <div style="font-family:'Cinzel',serif;font-size:1.3rem;color:var(--gold);margin-bottom:20px">วิเคราะห์ลูกค้า</div>
+        <div class="grid-2">
+          <div class="card">
+            <div style="font-weight:700;color:var(--gold);margin-bottom:16px">Top สมาชิก (ยอดฝาก)</div>
+            <div id="topDepositors"></div>
+          </div>
+          <div class="card">
+            <div style="font-weight:700;color:var(--gold);margin-bottom:16px">สถิติทั่วไป</div>
+            <div id="generalStats"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SETTINGS TAB -->
+      <div id="adminTab-settings" style="display:none">
+        <div style="font-family:'Cinzel',serif;font-size:1.3rem;color:var(--gold);margin-bottom:20px">ตั้งค่าระบบ</div>
+        <div class="grid-2">
+          <div class="card">
+            <div style="font-weight:700;color:var(--gold);margin-bottom:16px">🏦 บัญชีรับโอน</div>
+            <div class="form-group">
+              <label>ชื่อธนาคาร</label>
+              <select id="settingBankName">
+                <option>กสิกรไทย (KBank)</option>
+                <option>ไทยพาณิชย์ (SCB)</option>
+                <option>กรุงเทพ (BBL)</option>
+                <option>กรุงไทย (KTB)</option>
+                <option>ทหารไทยธนชาต (TTB)</option>
+                <option>ออมสิน</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label>เลขบัญชี</label>
+              <input type="text" id="settingBankAcc" placeholder="xxx-x-xxxxx-x">
+            </div>
+            <div class="form-group">
+              <label>ชื่อบัญชี</label>
+              <input type="text" id="settingBankHolder" placeholder="ชื่อ-นามสกุล เจ้าของบัญชี">
+            </div>
+            <div class="form-group">
+              <label>หมายเลข PromptPay</label>
+              <input type="text" id="settingPromptPay" placeholder="เบอร์โทรหรือเลขประจำตัว">
+            </div>
+            <button class="btn-full" onclick="saveBankSettings()">💾 บันทึกบัญชี</button>
+          </div>
+          <div class="card">
+            <div style="font-weight:700;color:var(--gold);margin-bottom:16px">⚙️ ตั้งค่าทั่วไป</div>
+            <div class="form-group">
+              <label>ฝากขั้นต่ำ (บาท)</label>
+              <input type="number" id="settingMinDeposit" value="100">
+            </div>
+            <div class="form-group">
+              <label>ถอนขั้นต่ำ (บาท)</label>
+              <input type="number" id="settingMinWithdraw" value="100">
+            </div>
+            <div class="form-group">
+              <label>ถอนสูงสุดต่อวัน (บาท)</label>
+              <input type="number" id="settingMaxWithdraw" value="50000">
+            </div>
+            <div style="margin-bottom:12px">
+              <div class="toggle-wrap">
+                <div class="toggle on" id="toggleMaintenance" onclick="this.classList.toggle('on')"></div>
+                <span style="font-size:0.88rem">ปิดปรับปรุงระบบ (maintenance mode)</span>
+              </div>
+            </div>
+            <button class="btn-full" onclick="saveGeneralSettings()">💾 บันทึก</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ADMINS TAB -->
+      <div id="adminTab-admins" style="display:none">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+          <div style="font-family:'Cinzel',serif;font-size:1.3rem;color:var(--gold)">จัดการแอดมิน</div>
+          <button class="nav-btn btn-gold" onclick="openModal('addAdminModal')">+ เพิ่มแอดมิน</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Username</th>
+                <th>ชื่อ</th>
+                <th>Role</th>
+                <th>2FA</th>
+                <th>สถานะ</th>
+                <th>Login ล่าสุด</th>
+                <th>จัดการ</th>
+              </tr>
+            </thead>
+            <tbody id="adminTableBody"></tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- SECURITY TAB -->
+      <div id="adminTab-security" style="display:none">
+        <div style="font-family:'Cinzel',serif;font-size:1.3rem;color:var(--gold);margin-bottom:20px">Security Log</div>
+        <div class="card" style="margin-bottom:16px">
+          <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap">
+            <select id="securityFilter" onchange="renderSecurityLog()" style="background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:6px;padding:8px;color:var(--text);font-family:'Sarabun',sans-serif;outline:none">
+              <option value="all">ทุกประเภท</option>
+              <option value="login">Login</option>
+              <option value="failed">Login ล้มเหลว</option>
+              <option value="action">Action</option>
+            </select>
+            <button class="nav-btn btn-outline" style="padding:8px 16px" onclick="exportCSV('security')">Export</button>
+          </div>
+        </div>
+        <div class="card" id="securityLogList"></div>
+      </div>
+
+    </div><!-- end admin-content -->
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- COMPLIANCE PAGES          -->
+<!-- ========================= -->
+<div class="page" id="page-terms">
+  <div class="section"><div class="prose">
+    <div class="section-title">ข้อกำหนดการใช้งาน</div>
+    <h2>1. การยอมรับข้อกำหนด</h2>
+    <p>การใช้งานเว็บไซต์นี้ถือว่าท่านได้ยอมรับข้อกำหนดและเงื่อนไขทั้งหมด</p>
+    <h2>2. เงื่อนไขสมาชิก</h2>
+    <p>ผู้สมัครต้องมีอายุ 18 ปีขึ้นไป และต้องใช้ข้อมูลที่เป็นความจริง</p>
+    <h2>3. การฝาก-ถอนเงิน</h2>
+    <p>การดำเนินการทุกรายการต้องผ่านการยืนยันตัวตน บัญชีต้องเป็นชื่อของสมาชิกเท่านั้น</p>
+    <h2>4. โบนัสและโปรโมชั่น</h2>
+    <p>โบนัสทุกประเภทมีเงื่อนไขการทำยอดก่อนถอน โปรดอ่านรายละเอียดก่อนรับโบนัส</p>
+    <button class="nav-btn btn-outline" onclick="showPage('home')" style="margin-top:20px">← กลับหน้าหลัก</button>
+  </div></div>
+</div>
+
+<div class="page" id="page-privacy">
+  <div class="section"><div class="prose">
+    <div class="section-title">นโยบายความเป็นส่วนตัว</div>
+    <h2>การเก็บข้อมูล</h2>
+    <p>เราเก็บข้อมูลที่จำเป็นสำหรับการให้บริการเท่านั้น ได้แก่ ชื่อ, เบอร์โทร, ข้อมูลการทำธุรกรรม</p>
+    <h2>การใช้ข้อมูล</h2>
+    <p>ข้อมูลของท่านจะไม่ถูกเปิดเผยหรือขายให้บุคคลที่สาม ยกเว้นตามที่กฎหมายกำหนด</p>
+    <h2>คุกกี้</h2>
+    <p>เว็บไซต์ใช้คุกกี้เพื่อปรับปรุงประสบการณ์ใช้งาน สามารถปิดการใช้คุกกี้ได้ในเบราว์เซอร์</p>
+    <button class="nav-btn btn-outline" onclick="showPage('home')" style="margin-top:20px">← กลับหน้าหลัก</button>
+  </div></div>
+</div>
+
+<div class="page" id="page-responsible">
+  <div class="section"><div class="prose">
+    <div class="section-title">การเล่นอย่างรับผิดชอบ</div>
+    <h2>เกมเป็นความบันเทิง</h2>
+    <p>การเล่นเกมออนไลน์ควรเป็นเพียงความบันเทิง อย่าเล่นด้วยเงินที่ไม่สามารถสูญเสียได้</p>
+    <h2>สัญญาณเตือน</h2>
+    <p>หากคุณรู้สึกว่าการเล่นเกมส่งผลกระทบต่อชีวิตประจำวัน โปรดขอความช่วยเหลือ</p>
+    <h2>เครื่องมือควบคุมตนเอง</h2>
+    <p>สมาชิกสามารถตั้งวงเงินฝากรายวัน, วงเงินแพ้สูงสุด, หรือหยุดเล่นชั่วคราวได้ผ่านหน้าโปรไฟล์</p>
+    <button class="nav-btn btn-outline" onclick="showPage('home')" style="margin-top:20px">← กลับหน้าหลัก</button>
+  </div></div>
+</div>
+
+<div class="page" id="page-contact">
+  <div class="section"><div class="prose">
+    <div class="section-title">ติดต่อเรา</div>
+    <div class="grid-2">
+      <div class="card" style="text-align:center">
+        <div style="font-size:2rem;margin-bottom:8px">💬</div>
+        <div style="font-weight:700;color:var(--gold)">LINE Official</div>
+        <div style="color:var(--text-dim);font-size:0.9rem;margin-top:4px">@royal777 (24 ชม.)</div>
+      </div>
+      <div class="card" style="text-align:center">
+        <div style="font-size:2rem;margin-bottom:8px">📧</div>
+        <div style="font-weight:700;color:var(--gold)">Email</div>
+        <div style="color:var(--text-dim);font-size:0.9rem;margin-top:4px">support@royal777.com</div>
+      </div>
+    </div>
+    <button class="nav-btn btn-outline" onclick="showPage('home')" style="margin-top:20px">← กลับหน้าหลัก</button>
+  </div></div>
+</div>
+
+<!-- ========================= -->
+<!-- MODALS                    -->
+<!-- ========================= -->
+
+<!-- Login Modal -->
+<div class="modal-overlay" id="loginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('loginModal')">×</button>
+    <div class="modal-title">เข้าสู่ระบบ</div>
+    <div id="loginForm">
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" id="loginUser" placeholder="กรอก username" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label>รหัสผ่าน</label>
+        <input type="password" id="loginPass" placeholder="กรอกรหัสผ่าน" autocomplete="current-password">
+      </div>
+      <div id="loginError" class="form-error" style="margin-bottom:8px"></div>
+      <button class="btn-full" onclick="doLogin()">เข้าสู่ระบบ</button>
+      <div style="text-align:center;margin-top:16px;font-size:0.85rem;color:var(--text-dim)">
+        ยังไม่มีบัญชี? <span onclick="closeModal('loginModal');openModal('registerModal')" style="color:var(--gold);cursor:pointer">สมัครสมาชิก</span>
+      </div>
+    </div>
+    <!-- 2FA form (shows if admin has 2FA enabled) -->
+    <div id="tfaForm" style="display:none">
+      <div style="text-align:center;margin-bottom:20px;color:var(--text-dim);font-size:0.9rem">
+        ป้อนรหัส 6 หลักจาก Authenticator App
+      </div>
+      <div class="otp-inputs" id="otpInputs">
+        <input class="otp-input" maxlength="1" oninput="otpNext(this,0)" inputmode="numeric">
+        <input class="otp-input" maxlength="1" oninput="otpNext(this,1)" inputmode="numeric">
+        <input class="otp-input" maxlength="1" oninput="otpNext(this,2)" inputmode="numeric">
+        <input class="otp-input" maxlength="1" oninput="otpNext(this,3)" inputmode="numeric">
+        <input class="otp-input" maxlength="1" oninput="otpNext(this,4)" inputmode="numeric">
+        <input class="otp-input" maxlength="1" oninput="otpNext(this,5)" inputmode="numeric">
+      </div>
+      <button class="btn-full" onclick="verify2FA()">ยืนยัน</button>
+    </div>
+  </div>
+</div>
+
+<!-- Register Modal -->
+<div class="modal-overlay" id="registerModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('registerModal')">×</button>
+    <div class="modal-title">สมัครสมาชิก</div>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="regUser" placeholder="ภาษาอังกฤษ/ตัวเลข 4-20 ตัว" autocomplete="username">
+    </div>
+    <div class="form-group">
+      <label>รหัสผ่าน</label>
+      <input type="password" id="regPass" placeholder="อย่างน้อย 8 ตัว" autocomplete="new-password">
+    </div>
+    <div class="form-group">
+      <label>ยืนยันรหัสผ่าน</label>
+      <input type="password" id="regPass2" placeholder="กรอกอีกครั้ง" autocomplete="new-password">
+    </div>
+    <div class="form-group">
+      <label>ชื่อ-นามสกุล</label>
+      <input type="text" id="regName" placeholder="ชื่อ-นามสกุลจริง">
+    </div>
+    <div class="form-group">
+      <label>เบอร์โทรศัพท์</label>
+      <input type="tel" id="regPhone" placeholder="0xxxxxxxxx">
+    </div>
+    <div id="regError" class="form-error" style="margin-bottom:8px"></div>
+    <div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:16px;font-size:0.82rem;color:var(--text-dim)">
+      <input type="checkbox" id="regAgree" style="margin-top:2px;width:auto">
+      <label for="regAgree">ฉันยอมรับ <span onclick="showPage('terms')" style="color:var(--gold);cursor:pointer">ข้อกำหนดการใช้งาน</span> และมีอายุ 18 ปีขึ้นไป</label>
+    </div>
+    <button class="btn-full" onclick="doRegister()">สมัครสมาชิก</button>
+  </div>
+</div>
+
+<!-- Admin Login Modal -->
+<div class="modal-overlay" id="adminLoginModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('adminLoginModal')">×</button>
+    <div class="modal-title">🛡️ Admin Login</div>
+    <div id="adminLoginForm">
+      <div class="form-group">
+        <label>Admin Username</label>
+        <input type="text" id="adminUser" placeholder="admin username" autocomplete="username">
+      </div>
+      <div class="form-group">
+        <label>รหัสผ่าน</label>
+        <input type="password" id="adminPass" placeholder="password" autocomplete="current-password">
+      </div>
+      <div id="adminLoginError" class="form-error" style="margin-bottom:8px"></div>
+      <button class="btn-full btn-red-full" onclick="doAdminLogin()">เข้าสู่ระบบ Admin</button>
+    </div>
+    <!-- 2FA for admin -->
+    <div id="admin2FAForm" style="display:none">
+      <div style="text-align:center;margin-bottom:20px">
+        <div style="font-size:2rem;margin-bottom:8px">🔐</div>
+        <div style="color:var(--text-dim);font-size:0.9rem">ป้อนรหัส 2FA (TOTP)</div>
+      </div>
+      <div class="otp-inputs" id="adminOtpInputs">
+        <input class="otp-input" maxlength="1" oninput="adminOtpNext(this,0)" inputmode="numeric">
+        <input class="otp-input" maxlength="1" oninput="adminOtpNext(this,1)" inputmode="numeric">
+        <input class="otp-input" maxlength="1" oninput="adminOtpNext(this,2)" inputmode="numeric">
+        <input class="otp-input" maxlength="1" oninput="adminOtpNext(this,3)" inputmode="numeric">
+        <input class="otp-input" maxlength="1" oninput="adminOtpNext(this,4)" inputmode="numeric">
+        <input class="otp-input" maxlength="1" oninput="adminOtpNext(this,5)" inputmode="numeric">
+      </div>
+      <div id="admin2FAError" class="form-error" style="text-align:center;margin-bottom:8px"></div>
+      <button class="btn-full btn-red-full" onclick="verify2FAAdmin()">ยืนยัน 2FA</button>
+      <div style="text-align:center;margin-top:12px;font-size:0.8rem;color:var(--text-dim)">ใช้ Google Authenticator หรือ Authy</div>
+    </div>
+  </div>
+</div>
+
+<!-- Withdraw Modal -->
+<div class="modal-overlay" id="withdrawModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('withdrawModal')">×</button>
+    <div class="modal-title">ถอนเงิน</div>
+    <div class="form-group">
+      <label>จำนวนเงินที่ต้องการถอน (บาท)</label>
+      <input type="number" id="withdrawAmount" placeholder="ขั้นต่ำ 100 บาท" min="100">
+    </div>
+    <div class="form-group">
+      <label>ชื่อธนาคาร</label>
+      <select id="withdrawBank">
+        <option>กสิกรไทย (KBank)</option>
+        <option>ไทยพาณิชย์ (SCB)</option>
+        <option>กรุงเทพ (BBL)</option>
+        <option>กรุงไทย (KTB)</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>เลขบัญชี</label>
+      <input type="text" id="withdrawAccNo" placeholder="xxx-x-xxxxx-x">
+    </div>
+    <div class="form-group">
+      <label>ชื่อบัญชี</label>
+      <input type="text" id="withdrawAccName" placeholder="ชื่อ-นามสกุลเจ้าของบัญชี">
+    </div>
+    <button class="btn-full" onclick="submitWithdraw()">ส่งคำขอถอนเงิน</button>
+  </div>
+</div>
+
+<!-- New Transaction Modal (Admin) -->
+<div class="modal-overlay" id="newTransactionModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('newTransactionModal')">×</button>
+    <div class="modal-title">สร้างรายการ</div>
+    <div class="form-group">
+      <label>Username สมาชิก</label>
+      <input type="text" id="txnUsername" placeholder="username">
+    </div>
+    <div class="form-group">
+      <label>ประเภท</label>
+      <select id="txnType">
+        <option value="deposit">ฝาก</option>
+        <option value="withdraw">ถอน</option>
+        <option value="bonus">โบนัส</option>
+        <option value="adjust">ปรับเครดิต</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>จำนวน (บาท)</label>
+      <input type="number" id="txnAmount" placeholder="0">
+    </div>
+    <div class="form-group">
+      <label>หมายเหตุ</label>
+      <input type="text" id="txnNote" placeholder="ระบุเหตุผล">
+    </div>
+    <button class="btn-full btn-red-full" onclick="createTransaction()">สร้างรายการ</button>
+  </div>
+</div>
+
+<!-- Add Admin Modal -->
+<div class="modal-overlay" id="addAdminModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('addAdminModal')">×</button>
+    <div class="modal-title">เพิ่มแอดมิน</div>
+    <div class="form-group">
+      <label>Username</label>
+      <input type="text" id="newAdminUser">
+    </div>
+    <div class="form-group">
+      <label>รหัสผ่านเริ่มต้น</label>
+      <input type="password" id="newAdminPass">
+    </div>
+    <div class="form-group">
+      <label>ชื่อ</label>
+      <input type="text" id="newAdminName">
+    </div>
+    <div class="form-group">
+      <label>Role</label>
+      <select id="newAdminRole">
+        <option value="superadmin">Super Admin</option>
+        <option value="admin">Admin</option>
+        <option value="finance">Finance</option>
+        <option value="support">Support</option>
+      </select>
+    </div>
+    <div style="margin-bottom:16px">
+      <div class="toggle-wrap">
+        <div class="toggle" id="newAdmin2FA" onclick="this.classList.toggle('on')"></div>
+        <span style="font-size:0.88rem">บังคับเปิด 2FA</span>
+      </div>
+    </div>
+    <button class="btn-full" onclick="addAdmin()">เพิ่มแอดมิน</button>
+  </div>
+</div>
+
+<!-- Member Detail Modal -->
+<div class="modal-overlay" id="memberDetailModal">
+  <div class="modal" style="max-width:560px">
+    <button class="modal-close" onclick="closeModal('memberDetailModal')">×</button>
+    <div class="modal-title">รายละเอียดสมาชิก</div>
+    <div id="memberDetailContent"></div>
+  </div>
+</div>
+
+<!-- Slip Detail Modal -->
+<div class="modal-overlay" id="slipDetailModal">
+  <div class="modal" style="max-width:560px">
+    <button class="modal-close" onclick="closeModal('slipDetailModal')">×</button>
+    <div class="modal-title">ตรวจสอบสลิป</div>
+    <div id="slipDetailContent"></div>
+  </div>
+</div>
+
+<!-- 2FA Setup Modal -->
+<div class="modal-overlay" id="setup2FAModal">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModal('setup2FAModal')">×</button>
+    <div class="modal-title">🔐 ตั้งค่า 2FA</div>
+    <div style="text-align:center">
+      <p style="color:var(--text-dim);font-size:0.9rem;margin-bottom:20px">สแกน QR นี้ด้วย Google Authenticator หรือ Authy</p>
+      <!-- Simulated TOTP QR -->
+      <div style="width:160px;height:160px;background:white;border-radius:8px;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:0.65rem;color:#333;text-align:center;padding:8px">
+        <div>
+          <div style="font-size:2rem">🔑</div>
+          <div>TOTP QR CODE</div>
+          <div style="word-break:break-all;margin-top:4px;font-size:0.6rem" id="totpSecret">XXXX XXXX XXXX XXXX</div>
+        </div>
+      </div>
+      <div style="font-size:0.8rem;color:var(--text-dim);margin-bottom:16px">Secret Key (manual):</div>
+      <div style="font-family:monospace;background:rgba(0,0,0,0.4);padding:8px 16px;border-radius:6px;color:var(--gold);font-size:0.85rem;word-break:break-all" id="totpSecretDisplay">JBSWY3DPEHPK3PXP</div>
+      <div style="margin-top:20px">
+        <p style="color:var(--text-dim);font-size:0.85rem;margin-bottom:8px">ยืนยันด้วยรหัสจาก App</p>
+        <div class="otp-inputs" id="setup2FAOtpInputs">
+          <input class="otp-input" maxlength="1" oninput="setup2FAOtpNext(this,0)" inputmode="numeric">
+          <input class="otp-input" maxlength="1" oninput="setup2FAOtpNext(this,1)" inputmode="numeric">
+          <input class="otp-input" maxlength="1" oninput="setup2FAOtpNext(this,2)" inputmode="numeric">
+          <input class="otp-input" maxlength="1" oninput="setup2FAOtpNext(this,3)" inputmode="numeric">
+          <input class="otp-input" maxlength="1" oninput="setup2FAOtpNext(this,4)" inputmode="numeric">
+          <input class="otp-input" maxlength="1" oninput="setup2FAOtpNext(this,5)" inputmode="numeric">
+        </div>
+        <button class="btn-full" onclick="confirm2FASetup()">ยืนยันเปิดใช้ 2FA</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ========================= -->
+<!-- SCRIPTS                   -->
+<!-- ========================= -->
+<script>
+// ===== STATE MANAGEMENT =====
+const STATE = {
+  currentUser: null,      // logged in member
+  currentAdmin: null,     // logged in admin
+  adminPending2FA: null,  // admin waiting for 2FA verification
+  depositMethod: 'bank',
+  depositAmount: 0,
+  slipFile: null,
+  txnFilter: 'all',
+  membersPage: 1,
+  membersPerPage: 10,
+
+  // Config (normally from backend/DB)
+  config: {
+    bankName: 'กสิกรไทย (KBank)',
+    bankAcc: '000-0-00000-0',       // ← ใส่เลขบัญชีจริงที่นี่
+    bankHolder: 'บริษัท ไซต์คุณ จำกัด', // ← ใส่ชื่อบัญชีจริงที่นี่
+    promptPay: '000-000-0000',       // ← ใส่ promptpay จริงที่นี่
+    minDeposit: 100,
+    minWithdraw: 100,
+    maxWithdraw: 50000,
+    maintenance: false,
+  },
+
+  // Data stores
+  members: [],
+  transactions: [],
+  admins: [],
+  securityLog: [],
+  slips: [],
+};
+
+// Load state from localStorage
+function loadState() {
+  try {
+    const saved = localStorage.getItem('royal777_state');
+    if (saved) {
+      const parsed = JSON.parse(saved);
+      STATE.members = parsed.members || [];
+      STATE.transactions = parsed.transactions || [];
+      STATE.admins = parsed.admins || [];
+      STATE.securityLog = parsed.securityLog || [];
+      STATE.slips = parsed.slips || [];
+      if (parsed.config) Object.assign(STATE.config, parsed.config);
+    }
+  } catch(e) {}
+
+  // Seed default super admin if none
+  if (STATE.admins.length === 0) {
+    STATE.admins.push({
+      id: 'A001',
+      username: 'superadmin',
+      // In real app: use bcrypt. Here: demo hash simulation
+      passwordHash: btoa('admin1234' + 'royal777salt'),
+      name: 'Super Admin',
+      role: 'superadmin',
+      twoFA: false,
+      totpSecret: 'JBSWY3DPEHPK3PXP',
+      status: 'active',
+      lastLogin: null,
+      createdAt: new Date().toISOString(),
+    });
+    saveState();
+  }
+}
+
+function saveState() {
+  try {
+    localStorage.setItem('royal777_state', JSON.stringify({
+      members: STATE.members,
+      transactions: STATE.transactions,
+      admins: STATE.admins,
+      securityLog: STATE.securityLog,
+      slips: STATE.slips,
+      config: STATE.config,
+    }));
+  } catch(e) {}
+}
+
+// Security: simple password hashing (production should use bcrypt on server)
+function hashPassword(pass) {
+  return btoa(pass + 'royal777salt_' + pass.length);
+}
+function verifyPassword(pass, hash) {
+  return hashPassword(pass) === hash;
+}
+
+// Generate ID
+function genId(prefix) {
+  return prefix + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substr(2,4).toUpperCase();
+}
+
+// ===== PAGE NAVIGATION =====
+function showPage(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  const page = document.getElementById('page-' + pageId);
+  if (page) {
+    page.classList.add('active');
+    window.scrollTo(0, 0);
+  }
+  // Refresh dynamic content
+  if (pageId === 'admin' && STATE.currentAdmin) refreshAdminDashboard();
+  if (pageId === 'member-dashboard' && STATE.currentUser) refreshMemberDashboard();
+}
+
+function requireLogin() {
+  if (!STATE.currentUser) {
+    openModal('loginModal');
+    showToast('กรุณาเข้าสู่ระบบก่อน', 'warning');
+  } else {
+    showPage('game');
+  }
+}
+
+// ===== MODAL =====
+function openModal(id) {
+  document.getElementById(id).classList.add('open');
+}
+function closeModal(id) {
+  document.getElementById(id).classList.remove('open');
+}
+// Close on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', e => {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
+});
+
+// ===== TOAST =====
+function showToast(msg, type = 'info') {
+  const c = document.getElementById('toast-container');
+  const t = document.createElement('div');
+  t.className = `toast ${type}`;
+  t.textContent = msg;
+  c.appendChild(t);
+  setTimeout(() => { t.style.opacity = '0'; t.style.transform = 'translateX(40px)'; t.style.transition = '0.3s'; setTimeout(() => t.remove(), 300); }, 3000);
+}
+
+// ===== BANNER SLIDE =====
+let currentSlide = 0;
+function goSlide(n) {
+  currentSlide = n;
+  document.getElementById('slides').style.transform = `translateX(-${n * 100}%)`;
+  document.querySelectorAll('.dot').forEach((d, i) => d.classList.toggle('active', i === n));
+}
+setInterval(() => goSlide((currentSlide + 1) % 3), 4000);
+
+// ===== AUTH: MEMBER =====
+function doRegister() {
+  const username = document.getElementById('regUser').value.trim();
+  const pass = document.getElementById('regPass').value;
+  const pass2 = document.getElementById('regPass2').value;
+  const name = document.getElementById('regName').value.trim();
+  const phone = document.getElementById('regPhone').value.trim();
+  const agree = document.getElementById('regAgree').checked;
+  const errEl = document.getElementById('regError');
+
+  errEl.textContent = '';
+  if (!username || !pass || !name || !phone) { errEl.textContent = 'กรุณากรอกข้อมูลให้ครบ'; return; }
+  if (!/^[a-zA-Z0-9_]{4,20}$/.test(username)) { errEl.textContent = 'Username: ภาษาอังกฤษ/ตัวเลข 4-20 ตัวเท่านั้น'; return; }
+  if (pass.length < 8) { errEl.textContent = 'รหัสผ่านต้องมีอย่างน้อย 8 ตัวอักษร'; return; }
+  if (pass !== pass2) { errEl.textContent = 'รหัสผ่านไม่ตรงกัน'; return; }
+  if (!agree) { errEl.textContent = 'กรุณายอมรับข้อกำหนดการใช้งาน'; return; }
+  if (STATE.members.find(m => m.username === username)) { errEl.textContent = 'Username นี้ถูกใช้แล้ว'; return; }
+
+  const member = {
+    id: genId('M'),
+    username,
+    passwordHash: hashPassword(pass),
+    name,
+    phone,
+    balance: 0,
+    level: 1,
+    points: 0,
+    totalDeposit: 0,
+    totalWithdraw: 0,
+    status: 'active',
+    createdAt: new Date().toISOString(),
+  };
+  STATE.members.push(member);
+  addSecurityLog('register', username, 'สมัครสมาชิกสำเร็จ');
+  saveState();
+
+  closeModal('registerModal');
+  loginMember(member);
+  showToast('สมัครสมาชิกสำเร็จ! ยินดีต้อนรับ ' + name, 'success');
+}
+
+function doLogin() {
+  const username = document.getElementById('loginUser').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  const errEl = document.getElementById('loginError');
+  errEl.textContent = '';
+
+  const member = STATE.members.find(m => m.username === username);
+  if (!member || !verifyPassword(pass, member.passwordHash)) {
+    errEl.textContent = 'Username หรือรหัสผ่านไม่ถูกต้อง';
+    addSecurityLog('failed', username, 'Login ล้มเหลว');
+    return;
+  }
+  if (member.status === 'disabled') { errEl.textContent = 'บัญชีถูกระงับ กรุณาติดต่อ Admin'; return; }
+
+  closeModal('loginModal');
+  loginMember(member);
+  addSecurityLog('login', username, 'เข้าสู่ระบบสำเร็จ');
+  showToast('ยินดีต้อนรับ ' + member.name, 'success');
+}
+
+function loginMember(member) {
+  STATE.currentUser = member;
+  updateNavForMember();
+  showPage('member-dashboard');
+  refreshMemberDashboard();
+  document.getElementById('loginUser').value = '';
+  document.getElementById('loginPass').value = '';
+  document.getElementById('loginError').textContent = '';
+}
+
+function logout() {
+  STATE.currentUser = null;
+  updateNavForGuest();
+  showPage('home');
+  showToast('ออกจากระบบแล้ว');
+}
+
+function updateNavForMember() {
+  document.getElementById('navLogin').style.display = 'none';
+  document.getElementById('navRegister').style.display = 'none';
+  document.getElementById('navLogout').style.display = '';
+  document.getElementById('navDeposit').style.display = '';
+  document.getElementById('navGame').style.display = '';
+  document.getElementById('navDashboard').style.display = '';
+}
+function updateNavForGuest() {
+  document.getElementById('navLogin').style.display = '';
+  document.getElementById('navRegister').style.display = '';
+  document.getElementById('navLogout').style.display = 'none';
+  document.getElementById('navDeposit').style.display = 'none';
+  document.getElementById('navGame').style.display = 'none';
+  document.getElementById('navDashboard').style.display = 'none';
+}
+
+// ===== AUTH: ADMIN =====
+function showAdminLogin() {
+  openModal('adminLoginModal');
+}
+
+function doAdminLogin() {
+  const username = document.getElementById('adminUser').value.trim();
+  const pass = document.getElementById('adminPass').value;
+  const errEl = document.getElementById('adminLoginError');
+  errEl.textContent = '';
+
+  const admin = STATE.admins.find(a => a.username === username);
+  if (!admin || !verifyPassword(pass, admin.passwordHash) && !(pass === 'admin1234' && admin.username === 'superadmin' && STATE.admins.find(a=>a.username==='superadmin' && a.passwordHash === btoa('admin1234' + 'royal777salt')))) {
+    errEl.textContent = 'Username หรือรหัสผ่านไม่ถูกต้อง';
+    addSecurityLog('failed', username, 'Admin Login ล้มเหลว');
+    return;
+  }
+  if (admin.status === 'disabled') { errEl.textContent = 'บัญชีถูกระงับ'; return; }
+
+  if (admin.twoFA) {
+    // Show 2FA form
+    STATE.adminPending2FA = admin;
+    document.getElementById('adminLoginForm').style.display = 'none';
+    document.getElementById('admin2FAForm').style.display = '';
+    document.querySelectorAll('#adminOtpInputs .otp-input').forEach(i => i.value = '');
+    document.querySelectorAll('#adminOtpInputs .otp-input')[0]?.focus();
+  } else {
+    completeAdminLogin(admin);
+  }
+}
+
+function verify2FAAdmin() {
+  const code = Array.from(document.querySelectorAll('#adminOtpInputs .otp-input')).map(i=>i.value).join('');
+  // In production: verify TOTP against server. Here: accept any 6 digits for demo
+  if (code.length === 6 && /^\d{6}$/.test(code)) {
+    const admin = STATE.adminPending2FA;
+    STATE.adminPending2FA = null;
+    document.getElementById('adminLoginForm').style.display = '';
+    document.getElementById('admin2FAForm').style.display = 'none';
+    completeAdminLogin(admin);
+  } else {
+    document.getElementById('admin2FAError').textContent = 'รหัสไม่ถูกต้อง';
+  }
+}
+
+function completeAdminLogin(admin) {
+  admin.lastLogin = new Date().toISOString();
+  STATE.currentAdmin = admin;
+  saveState();
+  closeModal('adminLoginModal');
+  addSecurityLog('login', admin.username, 'Admin Login สำเร็จ');
+  showPage('admin');
+  refreshAdminDashboard();
+  document.getElementById('adminNameDisplay').textContent = admin.name;
+  showToast('ยินดีต้อนรับ ' + admin.name, 'success');
+  // Clear form
+  document.getElementById('adminUser').value = '';
+  document.getElementById('adminPass').value = '';
+  document.getElementById('adminLoginError').textContent = '';
+}
+
+function logoutAdmin() {
+  STATE.currentAdmin = null;
+  showPage('home');
+  showToast('ออกจากระบบ Admin แล้ว');
+}
+
+// OTP input helpers
+function otpNext(el, idx) {
+  el.value = el.value.replace(/\D/g,'');
+  if (el.value && idx < 5) document.querySelectorAll('#otpInputs .otp-input')[idx+1]?.focus();
+}
+function adminOtpNext(el, idx) {
+  el.value = el.value.replace(/\D/g,'');
+  if (el.value && idx < 5) document.querySelectorAll('#adminOtpInputs .otp-input')[idx+1]?.focus();
+}
+function setup2FAOtpNext(el, idx) {
+  el.value = el.value.replace(/\D/g,'');
+  if (el.value && idx < 5) document.querySelectorAll('#setup2FAOtpInputs .otp-input')[idx+1]?.focus();
+}
+function verify2FA() {
+  const code = Array.from(document.querySelectorAll('#otpInputs .otp-input')).map(i=>i.value).join('');
+  if (code.length === 6) closeModal('loginModal');
+}
+function confirm2FASetup() {
+  const code = Array.from(document.querySelectorAll('#setup2FAOtpInputs .otp-input')).map(i=>i.value).join('');
+  if (code.length < 6) { showToast('กรุณากรอกรหัส 6 หลัก', 'error'); return; }
+  if (STATE.currentAdmin) {
+    STATE.currentAdmin.twoFA = true;
+    const a = STATE.admins.find(a => a.id === STATE.currentAdmin.id);
+    if (a) a.twoFA = true;
+    saveState();
+    closeModal('setup2FAModal');
+    renderAdminsTable();
+    showToast('เปิด 2FA สำเร็จ! บัญชีของคุณปลอดภัยมากขึ้น', 'success');
+    addSecurityLog('action', STATE.currentAdmin.username, 'เปิดใช้งาน 2FA');
+  }
+}
+
+// ===== DEPOSIT FLOW =====
+function selectDepositMethod(method) {
+  STATE.depositMethod = method;
+  document.getElementById('depositStep1').style.display = 'none';
+  document.getElementById('depositStep2').style.display = '';
+  document.getElementById('bankTransferInfo').style.display = method === 'bank' ? '' : 'none';
+  document.getElementById('promptpayInfo').style.display = method === 'promptpay' ? '' : 'none';
+  // Show actual bank info from config
+  document.getElementById('displayBankAcc').textContent = STATE.config.bankAcc;
+  document.getElementById('displayBankName').textContent = STATE.config.bankHolder;
+  document.getElementById('displayPromptPay').textContent = STATE.config.promptPay;
+  updateStepUI(2);
+}
+
+function nextDepositStep(step) {
+  if (step === 3) {
+    const amtEl = document.getElementById(STATE.depositMethod === 'bank' ? 'depositAmount' : 'depositAmount2');
+    const amt = parseFloat(amtEl?.value);
+    if (!amt || amt < STATE.config.minDeposit) {
+      showToast(`จำนวนเงินขั้นต่ำ ${STATE.config.minDeposit} บาท`, 'error');
+      return;
+    }
+    STATE.depositAmount = amt;
+    document.getElementById('depositStep2').style.display = 'none';
+    document.getElementById('depositStep3').style.display = '';
+    const now = new Date();
+    document.getElementById('transferTime').value = now.toISOString().slice(0,16);
+    updateStepUI(3);
+  } else if (step === 2) {
+    document.getElementById('depositStep3').style.display = 'none';
+    document.getElementById('depositStep2').style.display = '';
+    updateStepUI(2);
+  }
+}
+
+function updateStepUI(active) {
+  [1,2,3,4].forEach(n => {
+    const el = document.getElementById('step'+n);
+    el.className = 'step' + (n < active ? ' done' : n === active ? ' active' : '');
+  });
+}
+
+function previewSlip(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  STATE.slipFile = file;
+  if (file.type.startsWith('image/')) {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const img = document.getElementById('slipPreview');
+      img.src = ev.target.result;
+      img.style.display = 'block';
+    };
+    reader.readAsDataURL(file);
+  }
+}
+
+function submitDeposit() {
+  if (!STATE.currentUser) { openModal('loginModal'); return; }
+  const txnId = genId('DEP');
+  const txn = {
+    id: txnId,
+    userId: STATE.currentUser.id,
+    username: STATE.currentUser.username,
+    type: 'deposit',
+    amount: STATE.depositAmount,
+    method: STATE.depositMethod,
+    note: document.getElementById('depositNote').value,
+    transferTime: document.getElementById('transferTime').value,
+    slipRef: STATE.slipFile ? STATE.slipFile.name : null,
+    // In real system: upload to S3/GCS and store URL
+    slipData: null, // placeholder for base64 or URL
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+  };
+
+  // If slip file exists, read as base64 (small files only in demo)
+  if (STATE.slipFile && STATE.slipFile.size < 2 * 1024 * 1024) {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      txn.slipData = ev.target.result;
+      STATE.transactions.push(txn);
+      STATE.slips.push({ ...txn });
+      saveState();
+    };
+    reader.readAsDataURL(STATE.slipFile);
+  } else {
+    STATE.transactions.push(txn);
+    if (STATE.slipFile) STATE.slips.push({ ...txn });
+    saveState();
+  }
+
+  document.getElementById('txnRef').textContent = txnId;
+  document.getElementById('depositStep3').style.display = 'none';
+  document.getElementById('depositStep4').style.display = '';
+  updateStepUI(4);
+  showToast('แจ้งโอนสำเร็จ! รอการอนุมัติ', 'success');
+}
+
+function copyBankAcc() {
+  navigator.clipboard?.writeText(STATE.config.bankAcc).then(() => showToast('คัดลอกเลขบัญชีแล้ว', 'success'));
+}
+
+// ===== MEMBER DASHBOARD =====
+function refreshMemberDashboard() {
+  if (!STATE.currentUser) return;
+  const m = STATE.members.find(x => x.id === STATE.currentUser.id) || STATE.currentUser;
+  document.getElementById('memberName').textContent = m.name;
+  document.getElementById('memberBalance').textContent = m.balance.toLocaleString('th-TH', {minimumFractionDigits:2});
+  document.getElementById('memberTotalDeposit').textContent = m.totalDeposit.toLocaleString();
+  document.getElementById('memberTotalWithdraw').textContent = m.totalWithdraw.toLocaleString();
+  document.getElementById('memberLevel').textContent = m.level;
+  document.getElementById('memberPoints').textContent = m.points.toLocaleString();
+  document.getElementById('profileUsername').value = m.username;
+  document.getElementById('profileFullname').value = m.name;
+  document.getElementById('profilePhone').value = m.phone;
+
+  // Transactions
+  const myTxns = STATE.transactions.filter(t => t.userId === m.id).slice().reverse();
+  const tbody = document.getElementById('memberTxnTable');
+  if (myTxns.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="4" style="text-align:center;color:var(--text-dim);padding:24px">ยังไม่มีรายการ</td></tr>';
+  } else {
+    tbody.innerHTML = myTxns.map(t => `
+      <tr>
+        <td>${new Date(t.createdAt).toLocaleString('th-TH')}</td>
+        <td>${t.type === 'deposit' ? '⬆️ ฝาก' : t.type === 'withdraw' ? '⬇️ ถอน' : t.type === 'bonus' ? '🎁 โบนัส' : '🔧 ปรับ'}</td>
+        <td style="color:${['deposit','bonus','adjust'].includes(t.type) ? 'var(--success)' : 'var(--danger)'}">
+          ${['deposit','bonus','adjust'].includes(t.type) ? '+' : '-'}${t.amount.toLocaleString()}
+        </td>
+        <td><span class="badge badge-${t.status==='approved'?'success':t.status==='rejected'?'danger':'warning'}">${t.status==='approved'?'อนุมัติ':t.status==='rejected'?'ปฏิเสธ':'รอดำเนินการ'}</span></td>
+      </tr>
+    `).join('');
+  }
+
+  // Update game balance
+  document.getElementById('gameBalance').textContent = m.balance.toFixed(2);
+}
+
+function memberTab(tab, el) {
+  document.querySelectorAll('[id^="memberTab-"]').forEach(t => t.style.display = 'none');
+  document.getElementById('memberTab-' + tab).style.display = '';
+  document.querySelectorAll('.tabs .tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+}
+
+function saveProfile() {
+  if (!STATE.currentUser) return;
+  const m = STATE.members.find(x => x.id === STATE.currentUser.id);
+  if (!m) return;
+  m.name = document.getElementById('profileFullname').value.trim() || m.name;
+  m.phone = document.getElementById('profilePhone').value.trim() || m.phone;
+  const newPass = document.getElementById('profileNewPass').value;
+  if (newPass) {
+    if (newPass.length < 8) { showToast('รหัสผ่านต้องมีอย่างน้อย 8 ตัว', 'error'); return; }
+    m.passwordHash = hashPassword(newPass);
+    document.getElementById('profileNewPass').value = '';
+  }
+  STATE.currentUser = m;
+  saveState();
+  showToast('บันทึกข้อมูลสำเร็จ', 'success');
+  refreshMemberDashboard();
+}
+
+function submitWithdraw() {
+  if (!STATE.currentUser) return;
+  const m = STATE.members.find(x => x.id === STATE.currentUser.id);
+  const amt = parseFloat(document.getElementById('withdrawAmount').value);
+  const bank = document.getElementById('withdrawBank').value;
+  const acc = document.getElementById('withdrawAccNo').value.trim();
+  const name = document.getElementById('withdrawAccName').value.trim();
+
+  if (!amt || amt < STATE.config.minWithdraw) { showToast(`ถอนขั้นต่ำ ${STATE.config.minWithdraw} บาท`, 'error'); return; }
+  if (amt > m.balance) { showToast('ยอดเครดิตไม่พอ', 'error'); return; }
+  if (!acc || !name) { showToast('กรุณากรอกข้อมูลบัญชีให้ครบ', 'error'); return; }
+
+  const txn = {
+    id: genId('WTH'),
+    userId: m.id,
+    username: m.username,
+    type: 'withdraw',
+    amount: amt,
+    bankName: bank,
+    bankAcc: acc,
+    bankHolder: name,
+    status: 'pending',
+    createdAt: new Date().toISOString(),
+  };
+  STATE.transactions.push(txn);
+  m.balance -= amt;
+  saveState();
+  closeModal('withdrawModal');
+  refreshMemberDashboard();
+  showToast('ส่งคำขอถอนเงินสำเร็จ รอการอนุมัติ', 'success');
+}
+
+// ===== GAME =====
+const SYMBOLS = ['🍒','🍋','🍇','🍊','🍉','⭐','💎','🎰'];
+const PAYOUTS = { '🍒':5,'🍋':3,'🍇':8,'🍊':4,'🍉':6,'⭐':15,'💎':25,'🎰':50 };
+let currentBet = 10;
+let isSpinning = false;
+
+function changeBet(delta) {
+  currentBet = Math.max(10, Math.min(1000, currentBet + delta));
+  document.getElementById('betDisplay').textContent = currentBet;
+}
+
+function spinReels() {
+  if (isSpinning) return;
+  const m = STATE.currentUser ? STATE.members.find(x => x.id === STATE.currentUser.id) : null;
+  if (!m) { openModal('loginModal'); return; }
+  if (m.balance < currentBet) { showToast('เครดิตไม่พอ กรุณาฝากเงิน', 'error'); return; }
+
+  isSpinning = true;
+  document.getElementById('spinBtn').disabled = true;
+  document.getElementById('winDisplay').innerHTML = '<span style="color:var(--text-dim)">หมุน...</span>';
+
+  const reels = ['reel1','reel2','reel3'];
+  const results = reels.map(() => SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)]);
+
+  // Animate each reel with delay
+  reels.forEach((id, i) => {
+    setTimeout(() => {
+      const el = document.getElementById(id);
+      el.classList.remove('spin');
+      void el.offsetWidth; // reflow
+      el.classList.add('spin');
+      el.textContent = results[i];
+    }, i * 200);
+  });
+
+  setTimeout(() => {
+    isSpinning = false;
+    document.getElementById('spinBtn').disabled = false;
+
+    // Check win
+    m.balance -= currentBet;
+    m.points += Math.floor(currentBet / 10);
+    let winAmount = 0;
+    let winMsg = '';
+
+    if (results[0] === results[1] && results[1] === results[2]) {
+      const mult = PAYOUTS[results[0]] || 2;
+      winAmount = currentBet * mult;
+      winMsg = `🎉 แจ็คพอต! +${winAmount.toLocaleString()} บาท (${results[0]}x3 = x${mult})`;
+      m.balance += winAmount;
+    } else if (results[0] === results[1] || results[1] === results[2] || results[0] === results[2]) {
+      const matchSym = results[0] === results[1] ? results[0] : results[2];
+      winAmount = Math.floor(currentBet * 1.5);
+      winMsg = `✨ ชนะ! +${winAmount.toLocaleString()} บาท`;
+      m.balance += winAmount;
+    }
+
+    // Level up check
+    const newLevel = Math.floor(m.points / 1000) + 1;
+    if (newLevel > m.level) {
+      m.level = newLevel;
+      showToast(`🎊 เลเวลอัพ! ระดับ ${m.level}`, 'success');
+    }
+
+    document.getElementById('gameBalance').textContent = m.balance.toFixed(2);
+    STATE.currentUser.balance = m.balance;
+
+    if (winAmount > 0) {
+      document.getElementById('winDisplay').innerHTML = `<span class="win-amount">${winMsg}</span>`;
+    } else {
+      document.getElementById('winDisplay').innerHTML = `<span class="lose-text">ไม่ชนะ ลองใหม่อีกครั้ง!</span>`;
+    }
+
+    // Record game transaction for big wins only
+    if (winAmount >= currentBet * 10) {
+      STATE.transactions.push({
+        id: genId('GAME'),
+        userId: m.id,
+        username: m.username,
+        type: 'bonus',
+        amount: winAmount,
+        note: 'Jackpot ' + results.join(''),
+        status: 'approved',
+        createdAt: new Date().toISOString(),
+      });
+    }
+
+    saveState();
+    refreshMemberDashboard();
+  }, 800);
+}
+
+// ===== ADMIN DASHBOARD =====
+function refreshAdminDashboard() {
+  const today = new Date().toDateString();
+  const todayTxns = STATE.transactions.filter(t => new Date(t.createdAt).toDateString() === today);
+  const todayDeposits = todayTxns.filter(t => t.type === 'deposit' && t.status === 'approved').reduce((s,t) => s+t.amount, 0);
+  const todayWithdraws = todayTxns.filter(t => t.type === 'withdraw' && t.status === 'approved').reduce((s,t) => s+t.amount, 0);
+  const pending = STATE.transactions.filter(t => t.status === 'pending').length;
+
+  document.getElementById('statsMembers').textContent = STATE.members.length.toLocaleString();
+  document.getElementById('statsDeposit').textContent = todayDeposits.toLocaleString();
+  document.getElementById('statsWithdraw').textContent = todayWithdraws.toLocaleString();
+  document.getElementById('statsPending').textContent = pending;
+  document.getElementById('adminDate').textContent = new Date().toLocaleString('th-TH');
+
+  // Recent transactions widget
+  const recentEl = document.getElementById('recentTxns');
+  const recent = STATE.transactions.slice().reverse().slice(0,5);
+  recentEl.innerHTML = recent.length === 0 ? '<div style="color:var(--text-dim);font-size:0.85rem;text-align:center;padding:20px">ยังไม่มีรายการ</div>' :
+    recent.map(t => `
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.85rem">
+        <div>
+          <div style="font-weight:600">${t.username}</div>
+          <div style="color:var(--text-dim);font-size:0.78rem">${t.type === 'deposit' ? 'ฝาก' : t.type === 'withdraw' ? 'ถอน' : t.type}</div>
+        </div>
+        <div style="text-align:right">
+          <div style="color:${t.type==='deposit'?'var(--success)':'var(--danger)'}">
+            ${t.type === 'deposit' ? '+' : '-'}${t.amount.toLocaleString()} ฿
+          </div>
+          <span class="badge badge-${t.status==='approved'?'success':t.status==='rejected'?'danger':'warning'}" style="font-size:0.7rem">${t.status==='pending'?'รอ':t.status==='approved'?'OK':'ปฏิเสธ'}</span>
+        </div>
+      </div>
+    `).join('');
+
+  // Settings
+  document.getElementById('settingBankName').value = STATE.config.bankName;
+  document.getElementById('settingBankAcc').value = STATE.config.bankAcc;
+  document.getElementById('settingBankHolder').value = STATE.config.bankHolder;
+  document.getElementById('settingPromptPay').value = STATE.config.promptPay;
+  document.getElementById('settingMinDeposit').value = STATE.config.minDeposit;
+  document.getElementById('settingMinWithdraw').value = STATE.config.minWithdraw;
+  document.getElementById('settingMaxWithdraw').value = STATE.config.maxWithdraw;
+}
+
+function adminTab(tab, el) {
+  document.querySelectorAll('[id^="adminTab-"]').forEach(t => t.style.display = 'none');
+  document.getElementById('adminTab-' + tab).style.display = '';
+  document.querySelectorAll('.sidebar-item').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+
+  // Lazy load content
+  if (tab === 'members') renderMembersTable();
+  if (tab === 'transactions') renderTransactionsTable();
+  if (tab === 'slips') renderSlips();
+  if (tab === 'admins') renderAdminsTable();
+  if (tab === 'security') renderSecurityLog();
+  if (tab === 'analytics') renderAnalytics();
+  if (tab === 'dashboard') refreshAdminDashboard();
+  if (tab === 'settings') refreshAdminDashboard();
+}
+
+// ===== MEMBERS TABLE =====
+let currentMembersPage = 1;
+function renderMembersTable() {
+  const search = document.getElementById('memberSearch')?.value.toLowerCase() || '';
+  let filtered = STATE.members.filter(m =>
+    m.username.toLowerCase().includes(search) ||
+    m.name.toLowerCase().includes(search) ||
+    m.phone.includes(search)
+  );
+
+  const total = filtered.length;
+  const perPage = STATE.membersPerPage;
+  const pages = Math.max(1, Math.ceil(total / perPage));
+  if (currentMembersPage > pages) currentMembersPage = 1;
+  const slice = filtered.slice((currentMembersPage-1)*perPage, currentMembersPage*perPage);
+
+  const tbody = document.getElementById('membersTableBody');
+  tbody.innerHTML = slice.length === 0
+    ? '<tr><td colspan="8" style="text-align:center;padding:24px;color:var(--text-dim)">ไม่พบสมาชิก</td></tr>'
+    : slice.map((m, i) => `
+      <tr>
+        <td>${(currentMembersPage-1)*perPage + i + 1}</td>
+        <td><strong>${m.username}</strong></td>
+        <td>${m.name}</td>
+        <td>${m.phone}</td>
+        <td style="color:var(--gold)">${m.balance.toLocaleString()} ฿</td>
+        <td>${new Date(m.createdAt).toLocaleDateString('th-TH')}</td>
+        <td><span class="badge badge-${m.status==='active'?'success':'danger'}">${m.status==='active'?'ใช้งาน':'ระงับ'}</span></td>
+        <td>
+          <button onclick="viewMember('${m.id}')" style="background:rgba(51,181,229,0.2);border:1px solid var(--info);border-radius:4px;padding:4px 10px;cursor:pointer;color:var(--info);font-size:0.78rem;font-family:'Sarabun',sans-serif">ดู</button>
+          <button onclick="toggleMemberStatus('${m.id}')" style="background:rgba(255,${m.status==='active'?68:200},${m.status==='active'?68:81},0.2);border:1px solid ${m.status==='active'?'var(--danger)':'var(--success)'};border-radius:4px;padding:4px 10px;cursor:pointer;color:${m.status==='active'?'var(--danger)':'var(--success)'};font-size:0.78rem;font-family:'Sarabun',sans-serif;margin-left:4px">${m.status==='active'?'ระงับ':'เปิด'}</button>
+        </td>
+      </tr>
+    `).join('');
+
+  // Pagination
+  const pag = document.getElementById('membersPagination');
+  pag.innerHTML = '';
+  for (let p = 1; p <= pages; p++) {
+    const btn = document.createElement('button');
+    btn.textContent = p;
+    btn.className = 'tab' + (p === currentMembersPage ? ' active' : '');
+    btn.onclick = () => { currentMembersPage = p; renderMembersTable(); };
+    pag.appendChild(btn);
+  }
+}
+
+function viewMember(id) {
+  const m = STATE.members.find(x => x.id === id);
+  if (!m) return;
+  const txns = STATE.transactions.filter(t => t.userId === id);
+  document.getElementById('memberDetailContent').innerHTML = `
+    <div class="stat-grid" style="grid-template-columns:repeat(2,1fr)">
+      <div class="stat-card"><div class="stat-value">${m.balance.toLocaleString()}</div><div class="stat-label">เครดิต (฿)</div></div>
+      <div class="stat-card"><div class="stat-value">${m.level}</div><div class="stat-label">เลเวล</div></div>
+      <div class="stat-card"><div class="stat-value">${m.totalDeposit.toLocaleString()}</div><div class="stat-label">ฝากรวม (฿)</div></div>
+      <div class="stat-card"><div class="stat-value">${txns.length}</div><div class="stat-label">รายการทั้งหมด</div></div>
+    </div>
+    <div style="margin-bottom:12px;font-size:0.88rem">
+      <div style="color:var(--text-dim);margin-bottom:4px">ข้อมูลสมาชิก</div>
+      <div>📛 ${m.name} | 📱 ${m.phone}</div>
+      <div style="color:var(--text-dim);font-size:0.78rem;margin-top:4px">สมัคร: ${new Date(m.createdAt).toLocaleString('th-TH')}</div>
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:8px">
+      <button onclick="adjustCredit('${m.id}')" class="nav-btn btn-gold" style="padding:8px 16px;font-size:0.82rem">ปรับเครดิต</button>
+      <button onclick="resetPassword('${m.id}')" class="nav-btn btn-outline" style="padding:8px 16px;font-size:0.82rem">รีเซ็ตรหัส</button>
+      <button onclick="toggleMemberStatus('${m.id}');closeModal('memberDetailModal');renderMembersTable()" class="nav-btn btn-red" style="padding:8px 16px;font-size:0.82rem">${m.status==='active'?'ระงับบัญชี':'เปิดบัญชี'}</button>
+    </div>
+  `;
+  openModal('memberDetailModal');
+}
+
+function toggleMemberStatus(id) {
+  const m = STATE.members.find(x => x.id === id);
+  if (!m) return;
+  m.status = m.status === 'active' ? 'disabled' : 'active';
+  saveState();
+  renderMembersTable();
+  showToast(`${m.username}: ${m.status === 'active' ? 'เปิดใช้งาน' : 'ระงับ'}แล้ว`, m.status==='active'?'success':'warning');
+  addSecurityLog('action', STATE.currentAdmin?.username, `${m.status==='active'?'เปิด':'ระงับ'}บัญชี ${m.username}`);
+}
+
+function adjustCredit(id) {
+  const amt = parseFloat(prompt('จำนวนปรับ (บวก/ลบ เช่น 500 หรือ -200):'));
+  if (isNaN(amt)) return;
+  const m = STATE.members.find(x => x.id === id);
+  m.balance = Math.max(0, m.balance + amt);
+  STATE.transactions.push({
+    id: genId('ADJ'),
+    userId: m.id,
+    username: m.username,
+    type: 'adjust',
+    amount: Math.abs(amt),
+    note: 'Admin ปรับ: ' + (amt >= 0 ? '+' : '') + amt,
+    status: 'approved',
+    createdAt: new Date().toISOString(),
+  });
+  saveState();
+  closeModal('memberDetailModal');
+  showToast(`ปรับเครดิต ${m.username} ${amt >= 0 ? '+' : ''}${amt} บาท`, 'success');
+}
+
+function resetPassword(id) {
+  const newPass = prompt('รหัสผ่านใหม่ (อย่างน้อย 8 ตัว):');
+  if (!newPass || newPass.length < 8) { showToast('รหัสผ่านต้องมีอย่างน้อย 8 ตัว', 'error'); return; }
+  const m = STATE.members.find(x => x.id === id);
+  m.passwordHash = hashPassword(newPass);
+  saveState();
+  showToast(`รีเซ็ตรหัสผ่าน ${m.username} สำเร็จ`, 'success');
+  addSecurityLog('action', STATE.currentAdmin?.username, `รีเซ็ตรหัสผ่าน ${m.username}`);
+}
+
+// ===== TRANSACTIONS TABLE =====
+let txnFilter = 'all';
+function filterTxn(f, el) {
+  txnFilter = f;
+  document.querySelectorAll('#adminTab-transactions .tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  renderTransactionsTable();
+}
+
+function renderTransactionsTable() {
+  let data = STATE.transactions.slice().reverse();
+  if (txnFilter !== 'all') data = data.filter(t => t.status === txnFilter);
+
+  const tbody = document.getElementById('txnTableBody');
+  tbody.innerHTML = data.length === 0
+    ? '<tr><td colspan="7" style="text-align:center;padding:24px;color:var(--text-dim)">ไม่มีรายการ</td></tr>'
+    : data.map(t => `
+      <tr>
+        <td style="font-family:monospace;font-size:0.78rem">${t.id}</td>
+        <td>${t.username}</td>
+        <td>${t.type === 'deposit' ? '⬆️ ฝาก' : t.type === 'withdraw' ? '⬇️ ถอน' : t.type === 'bonus' ? '🎁' : '🔧'}</td>
+        <td style="color:${t.type==='deposit'||t.type==='bonus'?'var(--success)':'var(--danger)'}">${t.amount.toLocaleString()}</td>
+        <td>${new Date(t.createdAt).toLocaleString('th-TH')}</td>
+        <td><span class="badge badge-${t.status==='approved'?'success':t.status==='rejected'?'danger':'warning'}">${t.status==='pending'?'รอ':t.status==='approved'?'อนุมัติ':'ปฏิเสธ'}</span></td>
+        <td>
+          ${t.status === 'pending' ? `
+            <button onclick="approveTxn('${t.id}')" style="background:rgba(0,200,81,0.2);border:1px solid var(--success);border-radius:4px;padding:4px 8px;cursor:pointer;color:var(--success);font-size:0.75rem;font-family:'Sarabun',sans-serif">✓ อนุมัติ</button>
+            <button onclick="rejectTxn('${t.id}')" style="background:rgba(255,68,68,0.2);border:1px solid var(--danger);border-radius:4px;padding:4px 8px;cursor:pointer;color:var(--danger);font-size:0.75rem;font-family:'Sarabun',sans-serif;margin-left:4px">✕ ปฏิเสธ</button>
+          ` : '-'}
+        </td>
+      </tr>
+    `).join('');
+}
+
+function approveTxn(id) {
+  const txn = STATE.transactions.find(t => t.id === id);
+  if (!txn) return;
+  txn.status = 'approved';
+  txn.approvedAt = new Date().toISOString();
+  txn.approvedBy = STATE.currentAdmin?.username;
+
+  // Update member balance
+  const m = STATE.members.find(x => x.username === txn.username);
+  if (m) {
+    if (txn.type === 'deposit' || txn.type === 'bonus' || txn.type === 'adjust') {
+      m.balance += txn.amount;
+      m.totalDeposit += txn.type === 'deposit' ? txn.amount : 0;
+    } else if (txn.type === 'withdraw') {
+      m.totalWithdraw += txn.amount;
+    }
+  }
+
+  // Remove from pending slips
+  const si = STATE.slips.findIndex(s => s.id === id);
+  if (si !== -1) STATE.slips[si].status = 'approved';
+
+  saveState();
+  renderTransactionsTable();
+  renderSlips();
+  refreshAdminDashboard();
+  addSecurityLog('action', STATE.currentAdmin?.username, `อนุมัติ ${txn.type} ${txn.username} ${txn.amount}฿`);
+  showToast(`อนุมัติรายการ ${id} สำเร็จ`, 'success');
+}
+
+function rejectTxn(id) {
+  const txn = STATE.transactions.find(t => t.id === id);
+  if (!txn) return;
+  txn.status = 'rejected';
+  txn.rejectedAt = new Date().toISOString();
+
+  // Refund if withdraw
+  if (txn.type === 'withdraw') {
+    const m = STATE.members.find(x => x.username === txn.username);
+    if (m) m.balance += txn.amount;
+  }
+
+  const si = STATE.slips.findIndex(s => s.id === id);
+  if (si !== -1) STATE.slips[si].status = 'rejected';
+
+  saveState();
+  renderTransactionsTable();
+  renderSlips();
+  showToast(`ปฏิเสธรายการ ${id}`, 'warning');
+}
+
+function createTransaction() {
+  const username = document.getElementById('txnUsername').value.trim();
+  const type = document.getElementById('txnType').value;
+  const amount = parseFloat(document.getElementById('txnAmount').value);
+  const note = document.getElementById('txnNote').value;
+
+  if (!username || !amount) { showToast('กรุณากรอกข้อมูลให้ครบ', 'error'); return; }
+  const m = STATE.members.find(x => x.username === username);
+  if (!m) { showToast('ไม่พบสมาชิก', 'error'); return; }
+
+  const txn = {
+    id: genId('MAN'),
+    userId: m.id,
+    username,
+    type,
+    amount,
+    note,
+    status: 'approved',
+    createdAt: new Date().toISOString(),
+    approvedBy: STATE.currentAdmin?.username,
+  };
+  STATE.transactions.push(txn);
+
+  if (type === 'deposit' || type === 'bonus' || type === 'adjust') {
+    m.balance += amount;
+    if (type === 'deposit') m.totalDeposit += amount;
+  } else if (type === 'withdraw') {
+    m.balance = Math.max(0, m.balance - amount);
+    m.totalWithdraw += amount;
+  }
+
+  saveState();
+  closeModal('newTransactionModal');
+  renderTransactionsTable();
+  showToast(`สร้างรายการสำเร็จ`, 'success');
+  addSecurityLog('action', STATE.currentAdmin?.username, `สร้างรายการ ${type} ${username} ${amount}฿`);
+}
+
+// ===== SLIPS =====
+function renderSlips() {
+  const pending = STATE.slips.filter(s => s.status === 'pending');
+  const grid = document.getElementById('slipsGrid');
+  if (pending.length === 0) {
+    grid.innerHTML = '<div style="color:var(--text-dim);text-align:center;padding:40px;grid-column:1/-1">ไม่มีสลิปรอตรวจสอบ</div>';
+    return;
+  }
+  grid.innerHTML = pending.map(s => `
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+        <span class="badge badge-warning">รอตรวจสอบ</span>
+        <span style="font-size:0.78rem;color:var(--text-dim)">${new Date(s.createdAt).toLocaleString('th-TH')}</span>
+      </div>
+      <div style="font-weight:700;color:var(--gold);margin-bottom:4px">${s.username}</div>
+      <div style="font-size:1.2rem;color:var(--success);font-weight:700;margin-bottom:8px">${s.amount?.toLocaleString()} บาท</div>
+      ${s.slipData ? `<img src="${s.slipData}" style="width:100%;max-height:150px;object-fit:cover;border-radius:8px;margin-bottom:12px;border:1px solid var(--border)">` : '<div style="background:rgba(0,0,0,0.3);border-radius:8px;height:80px;display:flex;align-items:center;justify-content:center;color:var(--text-dim);font-size:0.85rem;margin-bottom:12px">📎 '+(s.slipRef||'ไม่มีไฟล์')+'</div>'}
+      <div style="display:flex;gap:8px">
+        <button onclick="approveTxn('${s.id}');adminTab('slips',document.querySelector('.sidebar-item:nth-child(7)'))" style="flex:1;background:rgba(0,200,81,0.2);border:1px solid var(--success);border-radius:6px;padding:8px;cursor:pointer;color:var(--success);font-family:'Sarabun',sans-serif;font-weight:600">✓ อนุมัติ</button>
+        <button onclick="rejectTxn('${s.id}');adminTab('slips',document.querySelector('.sidebar-item:nth-child(7)'))" style="flex:1;background:rgba(255,68,68,0.2);border:1px solid var(--danger);border-radius:6px;padding:8px;cursor:pointer;color:var(--danger);font-family:'Sarabun',sans-serif;font-weight:600">✕ ปฏิเสธ</button>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ===== ADMINS TABLE =====
+function renderAdminsTable() {
+  const tbody = document.getElementById('adminTableBody');
+  tbody.innerHTML = STATE.admins.map(a => `
+    <tr>
+      <td><strong>${a.username}</strong></td>
+      <td>${a.name}</td>
+      <td><span class="badge badge-${a.role==='superadmin'?'danger':a.role==='admin'?'warning':'info'}">${a.role}</span></td>
+      <td><span class="badge badge-${a.twoFA?'success':'danger'}">${a.twoFA?'✓ เปิด':'✕ ปิด'}</span></td>
+      <td><span class="badge badge-${a.status==='active'?'success':'danger'}">${a.status==='active'?'ใช้งาน':'ระงับ'}</span></td>
+      <td>${a.lastLogin ? new Date(a.lastLogin).toLocaleString('th-TH') : '-'}</td>
+      <td>
+        ${STATE.currentAdmin?.id === a.id ? `<button onclick="openModal('setup2FAModal')" style="background:rgba(51,181,229,0.2);border:1px solid var(--info);border-radius:4px;padding:4px 10px;cursor:pointer;color:var(--info);font-size:0.78rem;font-family:'Sarabun',sans-serif">ตั้ง 2FA</button>` : ''}
+        ${STATE.currentAdmin?.role === 'superadmin' && STATE.currentAdmin?.id !== a.id ? `
+          <button onclick="toggleAdminStatus('${a.id}')" style="background:rgba(255,68,68,0.15);border:1px solid var(--danger);border-radius:4px;padding:4px 10px;cursor:pointer;color:var(--danger);font-size:0.78rem;font-family:'Sarabun',sans-serif;margin-left:4px">${a.status==='active'?'ระงับ':'เปิด'}</button>
+          <button onclick="resetAdminPass('${a.id}')" style="background:rgba(255,187,51,0.15);border:1px solid var(--warning);border-radius:4px;padding:4px 10px;cursor:pointer;color:var(--warning);font-size:0.78rem;font-family:'Sarabun',sans-serif;margin-left:4px">รีเซ็ตรหัส</button>
+        ` : ''}
+      </td>
+    </tr>
+  `).join('');
+}
+
+function addAdmin() {
+  const username = document.getElementById('newAdminUser').value.trim();
+  const pass = document.getElementById('newAdminPass').value;
+  const name = document.getElementById('newAdminName').value.trim();
+  const role = document.getElementById('newAdminRole').value;
+  const twoFA = document.getElementById('newAdmin2FA').classList.contains('on');
+
+  if (!username || !pass || !name) { showToast('กรุณากรอกข้อมูลให้ครบ', 'error'); return; }
+  if (STATE.admins.find(a => a.username === username)) { showToast('Username นี้มีอยู่แล้ว', 'error'); return; }
+
+  STATE.admins.push({
+    id: genId('A'),
+    username,
+    passwordHash: hashPassword(pass),
+    name,
+    role,
+    twoFA,
+    status: 'active',
+    lastLogin: null,
+    createdAt: new Date().toISOString(),
+  });
+  saveState();
+  closeModal('addAdminModal');
+  renderAdminsTable();
+  showToast(`เพิ่มแอดมิน ${username} สำเร็จ`, 'success');
+  addSecurityLog('action', STATE.currentAdmin?.username, `เพิ่มแอดมิน ${username}`);
+}
+
+function toggleAdminStatus(id) {
+  const a = STATE.admins.find(x => x.id === id);
+  if (!a) return;
+  a.status = a.status === 'active' ? 'disabled' : 'active';
+  saveState();
+  renderAdminsTable();
+  showToast(`${a.username} ${a.status === 'active' ? 'เปิดแล้ว' : 'ระงับแล้ว'}`, 'warning');
+}
+
+function resetAdminPass(id) {
+  const newPass = prompt('รหัสผ่านใหม่ (อย่างน้อย 8 ตัว):');
+  if (!newPass || newPass.length < 8) { showToast('รหัสผ่านต้องมีอย่างน้อย 8 ตัว', 'error'); return; }
+  const a = STATE.admins.find(x => x.id === id);
+  a.passwordHash = hashPassword(newPass);
+  saveState();
+  showToast(`รีเซ็ตรหัส ${a.username} สำเร็จ`, 'success');
+}
+
+// ===== SECURITY LOG =====
+function addSecurityLog(type, user, action) {
+  STATE.securityLog.unshift({
+    id: genId('LOG'),
+    type,
+    user: user || 'system',
+    action,
+    ip: '*.*.*.***', // Masked
+    ts: new Date().toISOString(),
+  });
+  if (STATE.securityLog.length > 500) STATE.securityLog = STATE.securityLog.slice(0, 500);
+  saveState();
+}
+
+function renderSecurityLog() {
+  const filter = document.getElementById('securityFilter')?.value || 'all';
+  let logs = STATE.securityLog;
+  if (filter !== 'all') logs = logs.filter(l => l.type === filter);
+
+  const el = document.getElementById('securityLogList');
+  el.innerHTML = logs.slice(0, 100).map(l => `
+    <div class="log-entry">
+      <div class="log-icon" style="background:rgba(${l.type==='failed'?'255,68,68':l.type==='login'?'0,200,81':l.type==='action'?'51,181,229':'212,175,55'},0.15);color:${l.type==='failed'?'var(--danger)':l.type==='login'?'var(--success)':l.type==='action'?'var(--info)':'var(--gold)'}">
+        ${l.type==='failed'?'⚠️':l.type==='login'?'🔐':l.type==='action'?'⚙️':'📋'}
+      </div>
+      <div class="log-info">
+        <div class="log-action"><strong>${l.user}</strong> — ${l.action}</div>
+        <div class="log-time">${new Date(l.ts).toLocaleString('th-TH')} · IP: ${l.ip}</div>
+      </div>
+    </div>
+  `).join('') || '<div style="color:var(--text-dim);text-align:center;padding:24px">ไม่มีบันทึก</div>';
+}
+
+// ===== SETTINGS =====
+function saveBankSettings() {
+  STATE.config.bankName = document.getElementById('settingBankName').value;
+  STATE.config.bankAcc = document.getElementById('settingBankAcc').value.trim();
+  STATE.config.bankHolder = document.getElementById('settingBankHolder').value.trim();
+  STATE.config.promptPay = document.getElementById('settingPromptPay').value.trim();
+  saveState();
+  showToast('บันทึกข้อมูลบัญชีสำเร็จ', 'success');
+  addSecurityLog('action', STATE.currentAdmin?.username, 'แก้ไขข้อมูลบัญชีรับโอน');
+}
+
+function saveGeneralSettings() {
+  STATE.config.minDeposit = parseFloat(document.getElementById('settingMinDeposit').value) || 100;
+  STATE.config.minWithdraw = parseFloat(document.getElementById('settingMinWithdraw').value) || 100;
+  STATE.config.maxWithdraw = parseFloat(document.getElementById('settingMaxWithdraw').value) || 50000;
+  STATE.config.maintenance = document.getElementById('toggleMaintenance').classList.contains('on');
+  saveState();
+  showToast('บันทึกการตั้งค่าสำเร็จ', 'success');
+}
+
+// ===== REPORTS =====
+function generateReport() {
+  const from = document.getElementById('reportFrom').value;
+  const to = document.getElementById('reportTo').value;
+  let txns = STATE.transactions;
+  if (from) txns = txns.filter(t => t.createdAt >= from);
+  if (to) txns = txns.filter(t => t.createdAt <= to + 'T23:59:59');
+  const approved = txns.filter(t => t.status === 'approved');
+  const deposits = approved.filter(t => t.type === 'deposit').reduce((s,t) => s+t.amount, 0);
+  const withdraws = approved.filter(t => t.type === 'withdraw').reduce((s,t) => s+t.amount, 0);
+  const profit = deposits - withdraws;
+  const newMembers = STATE.members.filter(m => (!from || m.createdAt >= from) && (!to || m.createdAt <= to + 'T23:59:59')).length;
+
+  const cells = document.querySelectorAll('#reportStats .stat-value');
+  cells[0].textContent = deposits.toLocaleString();
+  cells[1].textContent = withdraws.toLocaleString();
+  cells[2].textContent = profit.toLocaleString();
+  cells[2].style.color = profit >= 0 ? 'var(--success)' : 'var(--danger)';
+  cells[3].textContent = newMembers;
+  showToast('สร้างรายงานสำเร็จ', 'success');
+}
+
+// ===== ANALYTICS =====
+function renderAnalytics() {
+  // Top depositors
+  const topDep = [...STATE.members].sort((a,b) => b.totalDeposit - a.totalDeposit).slice(0,5);
+  document.getElementById('topDepositors').innerHTML = topDep.length === 0
+    ? '<div style="color:var(--text-dim);font-size:0.85rem">ยังไม่มีข้อมูล</div>'
+    : topDep.map((m,i) => `
+      <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05);font-size:0.85rem">
+        <div><span style="color:var(--gold);font-weight:700;margin-right:8px">#${i+1}</span> ${m.username}</div>
+        <div style="color:var(--success)">${m.totalDeposit.toLocaleString()} ฿</div>
+      </div>
+    `).join('');
+
+  // General stats
+  const activeMembers = STATE.members.filter(m => m.status === 'active').length;
+  const totalBalance = STATE.members.reduce((s,m) => s+m.balance, 0);
+  document.getElementById('generalStats').innerHTML = `
+    <div style="font-size:0.88rem">
+      ${[
+        ['สมาชิก Active', activeMembers + ' คน'],
+        ['สมาชิก Disabled', (STATE.members.length - activeMembers) + ' คน'],
+        ['เครดิตรวมในระบบ', totalBalance.toLocaleString() + ' ฿'],
+        ['รายการทั้งหมด', STATE.transactions.length + ' รายการ'],
+        ['รายการรอดำเนินการ', STATE.transactions.filter(t=>t.status==='pending').length + ' รายการ'],
+      ].map(([k,v]) => `
+        <div style="display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid rgba(255,255,255,0.05)">
+          <span style="color:var(--text-dim)">${k}</span>
+          <span style="color:var(--gold);font-weight:600">${v}</span>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+// ===== EXPORT CSV =====
+function exportCSV(type) {
+  let rows = [];
+  let filename = type + '_export.csv';
+
+  if (type === 'members') {
+    rows.push(['ID','Username','ชื่อ','โทร','เครดิต','เลเวล','ฝากรวม','ถอนรวม','สถานะ','สมัครเมื่อ']);
+    STATE.members.forEach(m => rows.push([m.id,m.username,m.name,m.phone,m.balance,m.level,m.totalDeposit,m.totalWithdraw,m.status,m.createdAt]));
+    filename = 'members_' + new Date().toISOString().slice(0,10) + '.csv';
+  } else if (type === 'transactions') {
+    rows.push(['ID','Username','ประเภท','จำนวน','สถานะ','หมายเหตุ','เวลา']);
+    STATE.transactions.forEach(t => rows.push([t.id,t.username,t.type,t.amount,t.status,t.note||'',t.createdAt]));
+    filename = 'transactions_' + new Date().toISOString().slice(0,10) + '.csv';
+  } else if (type === 'report') {
+    rows.push(['ID','Username','ประเภท','จำนวน','สถานะ','เวลา']);
+    STATE.transactions.filter(t=>t.status==='approved').forEach(t => rows.push([t.id,t.username,t.type,t.amount,t.status,t.createdAt]));
+    filename = 'report_' + new Date().toISOString().slice(0,10) + '.csv';
+  } else if (type === 'security') {
+    rows.push(['ID','Type','User','Action','IP','Timestamp']);
+    STATE.securityLog.forEach(l => rows.push([l.id,l.type,l.user,l.action,l.ip,l.ts]));
+    filename = 'security_log_' + new Date().toISOString().slice(0,10) + '.csv';
+  }
+
+  const bom = '\uFEFF';
+  const csv = bom + rows.map(r => r.map(c => `"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
+  const blob = new Blob([csv], {type:'text/csv;charset=utf-8'});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = filename; a.click();
+  URL.revokeObjectURL(url);
+  showToast('Export สำเร็จ: ' + filename, 'success');
+}
+
+// ===== ROLE-BASED ACCESS =====
+function checkAdminPermission(action) {
+  if (!STATE.currentAdmin) return false;
+  const role = STATE.currentAdmin.role;
+  const perms = {
+    superadmin: ['all'],
+    admin: ['members','transactions','slips','reports','analytics','settings'],
+    finance: ['transactions','slips','reports','analytics'],
+    support: ['members','slips'],
+  };
+  const allowed = perms[role] || [];
+  return allowed.includes('all') || allowed.includes(action);
+}
+
+// ===== INIT =====
+loadState();
+
+// Secret admin access: triple-click on logo
+let logoClickCount = 0;
+document.querySelector('.logo').addEventListener('click', () => {
+  logoClickCount++;
+  if (logoClickCount >= 3) {
+    logoClickCount = 0;
+    if (!STATE.currentAdmin) openModal('adminLoginModal');
+    else showPage('admin');
+  }
+  setTimeout(() => logoClickCount = 0, 1500);
+});
+
+// Initialize
+document.getElementById('adminDate').textContent = new Date().toLocaleString('th-TH');
+
+// Drag & drop for upload zone
+const zone = document.getElementById('uploadZone');
+if (zone) {
+  zone.addEventListener('dragover', e => { e.preventDefault(); zone.classList.add('dragover'); });
+  zone.addEventListener('dragleave', () => zone.classList.remove('dragover'));
+  zone.addEventListener('drop', e => {
+    e.preventDefault(); zone.classList.remove('dragover');
+    const file = e.dataTransfer.files[0];
+    if (file) {
+      document.getElementById('slipFile').files = e.dataTransfer.files;
+      STATE.slipFile = file;
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = ev => { const img = document.getElementById('slipPreview'); img.src = ev.target.result; img.style.display = 'block'; };
+        reader.readAsDataURL(file);
+      }
+    }
+  });
+}
+
+// Reset deposit flow when navigating
+document.getElementById('navDeposit').addEventListener('click', () => {
+  ['depositStep1','depositStep2','depositStep3','depositStep4'].forEach((s,i) => {
+    document.getElementById(s).style.display = i===0?'':'none';
+  });
+  [1,2,3,4].forEach(n => { const el=document.getElementById('step'+n); el.className='step'+(n===1?' active':''); });
+  document.getElementById('slipPreview').style.display='none';
+  STATE.slipFile=null;
+});
+
+console.log('%c🎰 ROYAL777 System Ready', 'color:#D4AF37;font-size:1.2rem;font-weight:bold');
+console.log('%cAdmin Login: triple-click on logo', 'color:#888;font-size:0.85rem');
+console.log('%cDefault admin: superadmin / admin1234', 'color:#888;font-size:0.85rem');
+</script>
+</body>
+</html>

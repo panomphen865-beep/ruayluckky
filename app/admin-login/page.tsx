@@ -15,16 +15,31 @@ export default function AdminLoginPage() {
     setLoading(true);
     setMsg("");
 
-    const r = await fetch("/api/admin/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
-    const data = await r.json();
-    setLoading(false);
+    try {
+      const r = await fetch("/api/admin/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ username, password }),
+      });
 
-    if (!r.ok) return setMsg(data.message || "เข้าสู่ระบบแอดมินไม่สำเร็จ");
-    router.push("/admin");
+      let data: any = {};
+      try {
+        data = await r.json();
+      } catch {
+        data = {};
+      }
+
+      if (!r.ok) {
+        setMsg(data.message || "เข้าสู่ระบบแอดมินไม่สำเร็จ");
+        return;
+      }
+
+      router.push("/admin");
+    } catch {
+      setMsg("เชื่อมต่อเซิร์ฟเวอร์ไม่ได้ ลองใหม่อีกครั้ง");
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (

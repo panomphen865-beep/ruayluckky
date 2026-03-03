@@ -74,7 +74,11 @@ function readJson<T>(file: string, fallback: T): T {
 
 function writeJson(file: string, value: unknown) {
   ensure();
-  fs.writeFileSync(file, JSON.stringify(value, null, 2), "utf8");
+  try {
+    fs.writeFileSync(file, JSON.stringify(value, null, 2), "utf8");
+  } catch {
+    // On serverless read-only FS, skip disk writes but keep API functional.
+  }
 }
 
 function hashPassword(password: string) {

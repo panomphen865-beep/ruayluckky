@@ -53,6 +53,12 @@ export function findUserByPhone(phone: string) {
   return users.find((u) => u.phone === phone) || null;
 }
 
+export function findUserByIdentity(identity: string) {
+  const users = readJson<User[]>(usersFile);
+  const id = identity.toLowerCase();
+  return users.find((u) => u.phone === identity || u.username.toLowerCase() === id) || null;
+}
+
 export function findUserById(id: string) {
   const users = readJson<User[]>(usersFile);
   return users.find((u) => u.id === id) || null;
